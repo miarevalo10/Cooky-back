@@ -13,77 +13,102 @@ var conectarBD = MongoClient.connect(url, function(err, db) {
   db.close();
 });
 
-/**
-The insert command returns an object with the following fields:
+var existeEsteNickName = function(nickName){
+    var existe =false;
+    
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto sincrono 
+        console.log('1');
+        encontrarNickName(nickName, db, existe, function(exists)
+        {
+          existe = exists;
+          console.log('este es el callback! resultado '+ exists);
+          console.log('2');
+          db.close();
+        });
+        console.log('3');
+      });
+    return existe;
+}
+var encontrarNickName = function(nickName, db, existe, callback) {
+    // Get the clients collection
+    var collection = db.collection('clients');
+    // Find some clients
+    console.log("buscando a: "+"nickName"+'"'+nickName+'"');
+    var items = collection.find({"nickName":'"'+nickName+'"'}); 
 
-result Contains the result document from MongoDB
-ops Contains the documents inserted with added _id fields
-connection Contains the connection used to perform the insert
-*/
-var insertDocuments = function(objetoAAgregar,db, callback) {
-  // Get the documents collection
-  var collection = db.collection('documents');
-  // Insert some documents
-  collection.insert( objetoAAgregar
-  	, function(err, result) {
-    assert.equal(err, null);
-    console.log("Inserted "+ result.ops +" documents into the collection");
-    callback(result);
-  });
+    console.log("Found the following records ");
+    //me esta imprimiendo un items horrible
+    console.log(items);
+    //docs es la respuesta a la query
+    if(items.length === 0)
+    {
+      callback(false);
+    }
+    else
+    {
+      callback(true); //repetido
+    }
+
 }
 
 
 
-  var agregarABD = function(objetoAAgregar){
-  	var agregado =null;
-  	if(objetoAAgregar !== null && objetoAAgregar !== undefined && objetoAAgregar !== NaN)
-  	{
-  		MongoClient.connect(url, function(err, db) {
-			  insertDocuments(objetoAAgregar, db, function(resultado){
-			  	console.log('este es el callback! resultado'+' ops el documento'+ JSON.stringify(resultado.ops));
-			  	agregado = resultado;
-			  	db.close();
-			  });
-		});
-  	}
-  	return agregado;
-
-  }
-
-  
-
-
-var findDocuments = function(db, callback) {
-  // Get the documents collection
-  var collection = db.collection('documents');
-  // Find some documents
-  collection.find({}).toArray(function(err, docs) {
-    assert.equal(err, null);
-    console.log("Found the following records");
-    //console.log(docs)
-    callback(docs);
-  });
-}
-
-
-  var leerDBD = function(){
-  	var agregado =null;
-  	
-  		MongoClient.connect(url, function(err, db) {
-			  findDocuments(db, function(docs){
-			  	console.log('este es el callback! resultado '+ JSON.stringify(docs));
-			  	agregado = docs;
-			  	db.close();
-			  });
-		});
-  	
-  	return agregado;
-
-  }
 
 module.exports = {
-	agregar: agregarABD,
-	leerTodo: leerDBD
+  existsClientNickName : existeEsteNickName, //done
+  /**createClient: crearCliente,
+  getClient: traerCliente,
+  updateClient: modificarCliente,
+  deleteClient: borrarCliente*/
 
 
 };
+
+
+/*
+
+var existeEsteNickName = function(nickName){
+    var existe =false;
+    
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto asincrono 
+        console.log('1');
+        encontrarNickName(nickName, db, existe, function(exists)
+        {
+          existe = exists;
+          console.log('este es el callback! resultado '+ exists);
+          console.log('2');
+          db.close();
+        });
+        console.log('3');
+      });
+    return existe;
+}
+var encontrarNickName = function(nickName, db, existe, callback) {
+  // Get the clients collection
+  var collection = db.collection('clients');
+  // Find some clients
+  console.log("buscando a: "+"nickName"+'"'+nickName+'"');
+  collection.find({"nickName":'"'+nickName+'"'}).toArray(function(err, items) {
+    assert.equal(err, null);
+    console.log("Found the following records ");
+    console.log(items.length);
+    //docs es la respuesta a la query
+    if(items.length === 0)
+    {
+      callback(false);
+    }
+    else
+    {
+      callback(true);
+    }
+    
+  });
+}
+
+
+
+*/
