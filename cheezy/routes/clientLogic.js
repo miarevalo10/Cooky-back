@@ -32,16 +32,20 @@ var crearCliente = function (newClient)
 {
 	var nickName = newClient.nickName;
 	var existeNickName = existeEsteNickName(nickName);
+	var agrego = false;
+
+	//verificar todos datos cliente
+
 	if(existeNickName)
 	{
-		return ("Fail");
+		return false;
 	}
 	else
 	{
 		console.log('no existe');
-		//baseDatos.createClient(newClient);
+		agrego = baseDatos.createClient(newClient);
 	}
-	return "OK";
+	return agrego;
 
 }
 

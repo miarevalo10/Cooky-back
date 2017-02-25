@@ -63,7 +63,7 @@ router.post('/createClient', function(req, res, next) {
   var newClient = req.body;
   console.log("creating client: "+ JSON.stringify(newClient.nickName));
   var creado = clientLogic.createClient(newClient);
-  if(creado === "OK")
+  if(creado)//devuelve boolean
   {
       res.send('OK');
   }
