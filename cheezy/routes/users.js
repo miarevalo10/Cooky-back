@@ -15,8 +15,7 @@ router.use(bodyParser.urlencoded({
 
 
 router.get('/existsClient', function(req, res, next) {
-  console.log("llega a antes de imprimir");
-
+  console.log("ENTRA exist client?");
   if (req.body.length > 1e6) { 
     //1mb
     // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
@@ -24,15 +23,35 @@ router.get('/existsClient', function(req, res, next) {
   }
 
   var newClient = req.body;
-  console.log("creating client: "+ JSON.stringify(newClient.nickName));
-  var respuesta = clientLogic.existsClientNickName(newClient.nickName);
-  res.send(respuesta)// true, false o error
-  console.log("sale de  imprimir");
-  res.end();
-
+  console.log("verifying client "+ JSON.stringify(newClient.nickName));
+  clientLogic.existsClientNickName(newClient.nickName , function(respuesta){
+	  	res.send(respuesta);// true, false o error
+	    console.log("TERMINA exist client?");
+	    res.end();
+  });
+  
 });
 
 
+router.get('/getClient', function(req, res, next) {
+  console.log("ENTRA Get client");
+
+  if (req.body.length > 1e6) { 
+    //1mb
+    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    req.connection.destroy();
+  }
+
+  var client = req.body;
+  console.log("retrieving client: "+ JSON.stringify(client));
+  clientLogic.existsClientNickName(client, function(respuesta){
+  		console.log(JSON.stringify(respuesta));
+  		res.send(JSON.stringify(respuesta));// true, false o error
+  		console.log("TERMINA get client");
+  		res.end();
+  });
+  
+});
 
 
 
@@ -44,7 +63,7 @@ router.get('/existsClient', function(req, res, next) {
 //peticiones POST
 
 router.post('/createClient', function(req, res, next) {
-  console.log("ENTRA");
+  console.log("ENTRA createClient");
 
   if (req.body.length > 1e6) { 
     //1mb
@@ -66,7 +85,7 @@ router.post('/createClient', function(req, res, next) {
       console.log("paso final, no se agrega nada porque nickname repetido");
       res.send('Ocurrio un problema');
     }
-    console.log("TERMINA");
+    console.log("TERMINA createClient");
     res.end();
   });
 });

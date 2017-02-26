@@ -46,19 +46,19 @@ var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente){
         
       });
 }
-var encontrarNickName = function(nickName, db, existe, callback) {
+var encontrarNickName = function(nickNameC, db, existe, callback) {
     // Get the clients collection
     var collection = db.collection('clientCollection');
     // Find some clients
     console.log("buscando a: nickName"+'"'+nickName+'"');
-    collection.find({nickName:nickName}).toArray(function(err, results){
+    collection.find({nickName:nickNameC}).toArray(function(err, results){
           if(err) {
               console.log('error occured: ' + err);
               callback(false);
           }
           else
           {
-            console.log("Found the following records para el NickName "+results);
+            console.log("Found the following records para el NickName "+results.nickName);
             //docs es la respuesta a la query
             if(results.length === 0)
             {
@@ -85,24 +85,21 @@ var encontrarNickName = function(nickName, db, existe, callback) {
 
 
 var crearCliente = function(cliente){
-    agregado = false;
       MongoClient.connect(url, function(err, db) 
       {
         //esta haciendo esto sincrono 
         console.log('1 crear cliente base datos');
-        crearClienteDB(cliente, db, agregado, function(booleanAgrego)
+        crearClienteDB(cliente, db,  function(booleanAgrego)
         {
-          if(booleanAgrego){agregado =true}
           console.log('2 crear cliente base datos');
-          console.log('este es el callback! resultado, agrego al cliente '+agregado);
+          console.log('este es el callback! resultado, agrego al cliente '+booleanAgrego);
           
           db.close();
         });
         console.log('3 crear cliente base datos');
       });
-    return agregado;
 }
-var crearClienteDB = function(cliente, db, agregado, callback) {
+var crearClienteDB = function(cliente, db, callback) {
     // Get the clients collection
     var collection = db.collection('clientCollection');
     // Find some clients
@@ -122,6 +119,59 @@ var crearClienteDB = function(cliente, db, agregado, callback) {
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+var traerCliente = function(nickName, password, coneccionConResponse){
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto sincrono 
+        console.log('1 traer cliente base datos');
+        traerClienteDB(nickName, password, db,  function(booleanTrajo, objetoCliente)
+        {
+          console.log('2 traer cliente base datos');
+          console.log('este es el callback! resultado, agrego al cliente '+booleanTrajo);
+          db.close();
+          coneccionConResponse(objetoCliente);
+        });
+        console.log('3 traer cliente base datos');
+      });
+}
+var traerClienteDB = function(nickNameC, passwordC, db,  callback) {
+    // Get the clients collection
+    var collection = db.collection('clientCollection');
+    // Find some clients
+    console.log("trayendo a "+nickName + " con password "+ pas);
+    collection.find({nickName:nickNameC, password:passwordC}).toArray(function(err, results){
+          if(err) {
+              console.log('error occured: ' + err);
+              callback(false);
+          }
+          else
+          {
+            console.log("Found the following records para el cliente "+results.nickName);
+            //docs es la respuesta a la query
+            if(results.length === 0)
+            {
+              callback(false , null);
+            }
+            else
+            {
+              callback(true , results); //lo encontro
+            }
+          }
+          
+     }); 
+
+}
 
 
 

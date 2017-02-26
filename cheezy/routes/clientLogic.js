@@ -23,7 +23,7 @@ var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente)
 	if (string.indexOf(',') > -1  || string.indexOf(';') > -1 || string.indexOf(':') > -1 ||
 	    string.indexOf('{') > -1 ||string.indexOf(' ') > -1 ){
     // letras peligrosas
-       return "You cant use any of these simbols : , { ";
+       funcionCallbackParaAgregarCliente("You cant use any of these simbols : , {  nor space");
 	}
 	baseDatos.existsClientNickName(string, funcionCallbackParaAgregarCliente);
 }
@@ -46,13 +46,26 @@ var crearCliente = function (newClient, funcionCallbackResponse)
 			
 		}
 	});
+}
 
+var traerCliente = function (client, funcionCallbackResponse)
+{
+	var nickName = client.nickName;
+	var password = client.password;
+
+	if(nickname === undefined || password === undefined)
+	{
+		funcionCallbackResponse(null);
+	}
+	console.log('datos definidos... buscando cliente... ');
+	baseDatos.getClient(client, funcionCallbackResponse);
+	
 }
 
 module.exports = {
 	existsClientNickName : existeEsteNickName, //done
 	createClient: crearCliente,					//done
-	/**getClient: traerCliente,
-	updateClient: modificarCliente,
+	getClient: traerCliente,
+	/**updateClient: modificarCliente,
 	deleteClient: borrarCliente*/
 };
