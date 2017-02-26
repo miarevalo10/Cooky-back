@@ -33,7 +33,7 @@ router.get('/existsClient', function(req, res, next) {
 });
 
 
-router.get('/getClient', function(req, res, next) {
+router.post('/getClient', function(req, res, next) {
   console.log("ENTRA Get client");
 
   if (req.body.length > 1e6) { 
@@ -44,9 +44,9 @@ router.get('/getClient', function(req, res, next) {
 
   var client = req.body;
   console.log("retrieving client: "+ JSON.stringify(client));
-  clientLogic.existsClientNickName(client, function(respuesta){
+  clientLogic.getClient(client.nickName, client.password, function(respuesta){
   		console.log(JSON.stringify(respuesta));
-  		res.send(JSON.stringify(respuesta));// true, false o error
+  		res.send(JSON.stringify(respuesta));// null o el cliente
   		console.log("TERMINA get client");
   		res.end();
   });

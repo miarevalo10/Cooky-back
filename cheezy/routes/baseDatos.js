@@ -50,7 +50,7 @@ var encontrarNickName = function(nickNameC, db, existe, callback) {
     // Get the clients collection
     var collection = db.collection('clientCollection');
     // Find some clients
-    console.log("buscando a: nickName"+'"'+nickName+'"');
+    console.log("buscando a: nickName"+'"'+nickNameC+'"');
     collection.find({nickName:nickNameC}).toArray(function(err, results){
           if(err) {
               console.log('error occured: ' + err);
@@ -58,7 +58,7 @@ var encontrarNickName = function(nickNameC, db, existe, callback) {
           }
           else
           {
-            console.log("Found the following records para el NickName "+results.nickName);
+            console.log("Found the following records para el NickName "+ JSON.stringify(results[0]));
             //docs es la respuesta a la query
             if(results.length === 0)
             {
@@ -149,7 +149,7 @@ var traerClienteDB = function(nickNameC, passwordC, db,  callback) {
     // Get the clients collection
     var collection = db.collection('clientCollection');
     // Find some clients
-    console.log("trayendo a "+nickName + " con password "+ pas);
+    console.log("trayendo a "+nickNameC + " con password "+ passwordC);
     collection.find({nickName:nickNameC, password:passwordC}).toArray(function(err, results){
           if(err) {
               console.log('error occured: ' + err);
@@ -157,7 +157,7 @@ var traerClienteDB = function(nickNameC, passwordC, db,  callback) {
           }
           else
           {
-            console.log("Found the following records para el cliente "+results.nickName);
+            console.log("Found the following records para el cliente "+JSON.stringify(results[0]));
             //docs es la respuesta a la query
             if(results.length === 0)
             {

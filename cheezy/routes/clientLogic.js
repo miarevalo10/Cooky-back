@@ -48,17 +48,15 @@ var crearCliente = function (newClient, funcionCallbackResponse)
 	});
 }
 
-var traerCliente = function (client, funcionCallbackResponse)
+var traerCliente = function (clientNickname, clientPassword, funcionCallbackResponse)
 {
-	var nickName = client.nickName;
-	var password = client.password;
-
-	if(nickname === undefined || password === undefined)
+	console.log('validando datos...'+ clientNickname +" "+clientPassword);
+	if(clientNickname === undefined || clientPassword === undefined)
 	{
 		funcionCallbackResponse(null);
 	}
 	console.log('datos definidos... buscando cliente... ');
-	baseDatos.getClient(client, funcionCallbackResponse);
+	baseDatos.getClient(clientNickname, clientPassword , funcionCallbackResponse);
 	
 }
 
