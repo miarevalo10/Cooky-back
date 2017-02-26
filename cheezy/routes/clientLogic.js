@@ -60,6 +60,25 @@ var traerCliente = function (clientNickname, clientPassword, funcionCallbackResp
 	
 }
 
+var modificarCliente = function (cliente, funcionCallbackResponse)
+{
+	var nickName = cliente.nickName;
+	existeEsteNickName(nickName, function(existeNickName){
+		if(existeNickName)
+		{
+			//ya existe entonces se puede modificar
+			console.log('si existe');
+			baseDatos.updateClient(cliente);//asincrono
+			funcionCallbackResponse(true);//si se modifica
+		}
+		else
+		{
+			console.log('no existe');
+			funcionCallbackResponse(false);//no existe entonces no se puede modificar
+			
+		}
+	});
+}
 
 var borrarCliente = function (newClient, funcionCallbackResponse)
 {
@@ -86,6 +105,6 @@ module.exports = {
 	existsClientNickName : existeEsteNickName, //done
 	createClient: crearCliente,					//done
 	getClient: traerCliente,
-	/**updateClient: modificarCliente,*/
+	updateClient: modificarCliente,
 	deleteClient: borrarCliente
 };

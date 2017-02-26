@@ -102,6 +102,35 @@ router.post('/createClient', function(req, res, next) {
 
 
 
+router.post('/updateClient', function(req, res, next) {
+  console.log("ENTRA updateClient");
+
+  if (req.body.length > 1e6) { 
+    //1mb
+    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    req.connection.destroy();
+  }
+
+  var newClient = req.body;
+  console.log("modifying client: "+ JSON.stringify(newClient.nickName));
+  clientLogic.updateClient(newClient, function (creado){
+    //mando esta funcion como callback para que todo sea sincronico
+    if(creado)//devuelve boolean
+    {
+        console.log("paso final, ya se esta modificando en paralelo si el password era correcto");
+        res.send('MODIFICADO si el password era correcto');
+    }
+    else
+    {
+      console.log("paso final, no se agrega nada porque nickname repetido");
+      res.send('Ocurrio un problema');
+    }
+    console.log("TERMINA updateClient");
+    res.end();
+  });
+});
+
+
 
 
 router.post('/deleteClient', function(req, res, next) {
@@ -119,8 +148,8 @@ router.post('/deleteClient', function(req, res, next) {
     //mando esta funcion como callback para que todo sea sincronico
     if(borrado)//devuelve boolean
     {
-        console.log("paso final, ya se esta borrando en paralelo");
-        res.send('BORRADO');
+        console.log("paso final, ya se esta borrando en paralelo si el password era correcto");
+        res.send('BORRADO si el password era correcto');
     }
     else
     {
