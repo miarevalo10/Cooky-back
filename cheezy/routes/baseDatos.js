@@ -51,14 +51,14 @@ var encontrarNickName = function(nickName, db, existe, callback) {
     var collection = db.collection('clientCollection');
     // Find some clients
     console.log("buscando a: nickName"+'"'+nickName+'"');
-    collection.find({"nickName":'"'+nickName+'"'}).toArray(function(err, results){
+    collection.find({nickName:nickName}).toArray(function(err, results){
           if(err) {
               console.log('error occured: ' + err);
               callback(false);
           }
           else
           {
-            console.log("Found the following records "+results);
+            console.log("Found the following records para el NickName "+results);
             //docs es la respuesta a la query
             if(results.length === 0)
             {
@@ -142,56 +142,10 @@ var crearClienteDB = function(cliente, db, agregado, callback) {
 module.exports = {
   existsClientNickName : existeEsteNickName, //done
   createClient: crearCliente,
-  /**getClient: traerCliente,
-  updateClient: modificarCliente,
+  getClient: traerCliente,
+  /**updateClient: modificarCliente,
   deleteClient: borrarCliente*/
 
 
 };
 
-
-/*
-
-var existeEsteNickName = function(nickName){
-    var existe =false;
-    
-      MongoClient.connect(url, function(err, db) 
-      {
-        //esta haciendo esto asincrono 
-        console.log('1');
-        encontrarNickName(nickName, db, existe, function(exists)
-        {
-          existe = exists;
-          console.log('este es el callback! resultado '+ exists);
-          console.log('2');
-          db.close();
-        });
-        console.log('3');
-      });
-    return existe;
-}
-var encontrarNickName = function(nickName, db, existe, callback) {
-  // Get the clients collection
-  var collection = db.collection('clients');
-  // Find some clients
-  console.log("buscando a: "+"nickName"+'"'+nickName+'"');
-  collection.find({"nickName":'"'+nickName+'"'}).toArray(function(err, items) {
-    assert.equal(err, null);
-    console.log("Found the following records ");
-    console.log(items.length);
-    //docs es la respuesta a la query
-    if(items.length === 0)
-    {
-      callback(false);
-    }
-    else
-    {
-      callback(true);
-    }
-    
-  });
-}
-
-
-
-*/
