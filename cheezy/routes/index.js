@@ -22,59 +22,5 @@ router.get('/', function(req, res, next) {
 
 });
 
-router.get('/existsClient', function(req, res, next) {
-  console.log("llega a antes de imprimir");
-
-  if (req.body.length > 1e6) { 
-    //1mb
-    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
-    req.connection.destroy();
-  }
-
-  var newClient = req.body;
-  console.log("creating client: "+ JSON.stringify(newClient.nickName));
-  var respuesta = clientLogic.existsClientNickName(newClient.nickName);
-  res.send(respuesta)// true, false o error
-  console.log("sale de  imprimir");
-  res.end();
-
-});
-
-
-
-
-
-
-
-
-
-
-//peticiones POST
-
-router.post('/createClient', function(req, res, next) {
-  console.log("llega a antes de imprimir");
-
-  if (req.body.length > 1e6) { 
-    //1mb
-    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
-    req.connection.destroy();
-  }
-
-  var newClient = req.body;
-  console.log("creating client: "+ JSON.stringify(newClient.nickName));
-  var creado = clientLogic.createClient(newClient);
-  if(creado)//devuelve boolean
-  {
-      res.send('OK');
-  }
-  else
-  {
-    res.send('Ocurrio un problema');
-  }
-  console.log("sale de  imprimir");
-  res.end();
-
-});
-
 
 module.exports = router;

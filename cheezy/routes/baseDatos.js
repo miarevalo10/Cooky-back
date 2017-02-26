@@ -28,44 +28,49 @@ var conectarBD = MongoClient.connect(url, function(err, db) {
 
 
 
-var existeEsteNickName = function(nickName){
+var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente){
     var existe =false;
     
       MongoClient.connect(url, function(err, db) 
       {
         //esta haciendo esto sincrono 
-        console.log('1');
-        encontrarNickName(nickName, db, existe, function(exists)
+        console.log('1 existe nickName?');
+        encontrarNickName(nickName, db, existe, function(exists)//esta funcion es el callback de abajo
         {
           existe = exists;
-          console.log('este es el callback! resultado '+ exists);
-          console.log('2');
+          console.log('2 existe nickName? este es el callback! resultado '+ exists);
           db.close();
+          console.log('3 existe nickName? Devuelve '+existe);
+          funcionCallbackParaAgregarCliente(existe);
         });
-        console.log('3');
+        
       });
-    return existe;
 }
 var encontrarNickName = function(nickName, db, existe, callback) {
     // Get the clients collection
-    var collection = db.clientCollection;
+    var collection = db.collection('clientCollection');
     // Find some clients
-    console.log("buscando a: "+"nickName"+'"'+nickName+'"');
-    var items = collection.find({"nickName":'"'+nickName+'"'}); 
-
-    console.log("Found the following records ");
-    //me esta imprimiendo un items horrible
-    console.log(items);
-    //docs es la respuesta a la query
-    if(items.length === 0)
-    {
-      callback(false);
-    }
-    else
-    {
-      callback(true); //repetido
-    }
-
+    console.log("buscando a: nickName"+'"'+nickName+'"');
+    collection.find({"nickName":'"'+nickName+'"'}).toArray(function(err, results){
+          if(err) {
+              console.log('error occured: ' + err);
+              callback(false);
+          }
+          else
+          {
+            console.log("Found the following records "+results);
+            //docs es la respuesta a la query
+            if(results.length === 0)
+            {
+              callback(false);
+            }
+            else
+            {
+              callback(true); //repetido
+            }
+          }
+          
+     }); 
 }
 
 
@@ -84,21 +89,22 @@ var crearCliente = function(cliente){
       MongoClient.connect(url, function(err, db) 
       {
         //esta haciendo esto sincrono 
-        console.log('1');
+        console.log('1 crear cliente base datos');
         crearClienteDB(cliente, db, agregado, function(booleanAgrego)
         {
-          if(!booleanAgrego){agregado =false}
+          if(booleanAgrego){agregado =true}
+          console.log('2 crear cliente base datos');
           console.log('este es el callback! resultado, agrego al cliente '+agregado);
-          console.log('2');
+          
           db.close();
         });
-        console.log('3');
+        console.log('3 crear cliente base datos');
       });
     return agregado;
 }
 var crearClienteDB = function(cliente, db, agregado, callback) {
     // Get the clients collection
-    var collection = db.clientCollection;
+    var collection = db.collection('clientCollection');
     // Find some clients
     console.log("creanndo a "+cliente.nickName);
     var writeResponse = collection.insert(cliente);

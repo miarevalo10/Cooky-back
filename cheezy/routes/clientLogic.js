@@ -17,7 +17,7 @@ var baseDatos = require('./baseDatos.js');
 	}
 
 */
-var existeEsteNickName = function(nickName)
+var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente)
 {
 	string = nickName.trim();
 	if (string.indexOf(',') > -1  || string.indexOf(';') > -1 || string.indexOf(':') > -1 ||
@@ -25,27 +25,27 @@ var existeEsteNickName = function(nickName)
     // letras peligrosas
        return "You cant use any of these simbols : , { ";
 	}
-	return baseDatos.existsClientNickName(string);
+	baseDatos.existsClientNickName(string, funcionCallbackParaAgregarCliente);
 }
 
-var crearCliente = function (newClient)
+var crearCliente = function (newClient, funcionCallbackResponse)
 {
 	var nickName = newClient.nickName;
-	var existeNickName = existeEsteNickName(nickName);
-	var agrego = false;
-
-	//verificar todos datos cliente
-
-	if(existeNickName)
-	{
-		return false;
-	}
-	else
-	{
-		console.log('no existe');
-		agrego = baseDatos.createClient(newClient);
-	}
-	return agrego;
+	existeEsteNickName(nickName, function(existeNickName){
+			//verificar todos datos cliente, se hace sincronico cuando este retorne
+		if(existeNickName)
+		{
+			//ya existe entonces no se crea
+			funcionCallbackResponse(false);
+		}
+		else
+		{
+			console.log('no existe');
+			baseDatos.createClient(newClient);
+			funcionCallbackResponse(true);//ya se verifico que si existe el nickname entonces puede retornar ya
+			
+		}
+	});
 
 }
 
