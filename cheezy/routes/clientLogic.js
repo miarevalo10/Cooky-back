@@ -31,7 +31,7 @@ var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente)
 var crearCliente = function (newClient, funcionCallbackResponse)
 {
 	var nickName = newClient.nickName;
-	existeEsteNickName(nickName, function(existeNickName){
+	existeEsteNickName(nickName, function(existeNickName){//verifica que no haya otro usuario con este nickname
 			//verificar todos datos cliente, se hace sincronico cuando este retorne
 		if(existeNickName)
 		{
@@ -60,10 +60,32 @@ var traerCliente = function (clientNickname, clientPassword, funcionCallbackResp
 	
 }
 
+
+var borrarCliente = function (newClient, funcionCallbackResponse)
+{
+	var nickName = newClient.nickName;
+	existeEsteNickName(nickName, function(existeNickName){
+		if(existeNickName)
+		{
+			//ya existe entonces se puede borrar
+			console.log('si existe');
+			baseDatos.deleteClient(newClient.nickName, newClient.password);
+			funcionCallbackResponse(true);//si se borra
+		}
+		else
+		{
+			console.log('no existe');
+			funcionCallbackResponse(false);//no existe entonces no se puede borrar
+			
+		}
+	});
+}
+
+
 module.exports = {
 	existsClientNickName : existeEsteNickName, //done
 	createClient: crearCliente,					//done
 	getClient: traerCliente,
-	/**updateClient: modificarCliente,
-	deleteClient: borrarCliente*/
+	/**updateClient: modificarCliente,*/
+	deleteClient: borrarCliente
 };

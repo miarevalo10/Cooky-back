@@ -184,7 +184,80 @@ var traerClienteDB = function(nickNameC, passwordC, db,  callback) {
 
 
 
+var modificarCliente = function(nickName, password,  queModifica, newValue){
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto sincrono 
+        console.log('1 traer cliente base datos');
+        traerClienteDB(nickName, password, db,  function(booleanTrajo, objetoCliente)
+        {
+          console.log('2 traer cliente base datos');
+          console.log('este es el callback! resultado, agrego al cliente '+booleanTrajo);
+          db.close();
+          coneccionConResponse(objetoCliente);
+        });
+        console.log('3 traer cliente base datos');
+      });
+}
+var traerClienteDB = function(nickNameC, passwordC, db,  callback) {
+    // Get the clients collection
+    var collection = db.collection('clientCollection');
+    // Find some clients
+    console.log("trayendo a "+nickNameC + " con password "+ passwordC);
+    collection.find({nickName:nickNameC, password:passwordC}).toArray(function(err, results){
+          if(err) {
+              console.log('error occured: ' + err);
+              callback(false);
+          }
+          else
+          {
+            console.log("Found the following records para el cliente "+JSON.stringify(results[0]));
+            //docs es la respuesta a la query
+            if(results.length === 0)
+            {
+              callback(false , null);
+            }
+            else
+            {
+              callback(true , results); //lo encontro
+            }
+          }
+          
+     }); 
 
+}
+
+
+
+
+
+
+
+
+
+
+var borrarCliente = function(nickName, password){
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto sincrono 
+        console.log('1 eliminar cliente base datos');
+        eliminarClienteDB(nickName, password, db,  function(booleanElimino)
+        {
+          console.log('2 eliminar cliente base datos');
+          console.log('este es el callback! resultado, elimino al cliente '+booleanElimino);
+          db.close();
+        });
+        console.log('3 eliminar cliente base datos');
+      });
+}
+var eliminarClienteDB = function(nickNameC, passwordC, db,  callback) {
+    // Get the clients collection
+    var collection = db.collection('clientCollection');
+    // Find some clients
+    console.log("eliminando a "+nickNameC + " con password "+ passwordC);
+    collection.remove({nickName:nickNameC, password:passwordC});
+
+}
 
 
 
@@ -193,8 +266,8 @@ module.exports = {
   existsClientNickName : existeEsteNickName, //done
   createClient: crearCliente,
   getClient: traerCliente,
-  /**updateClient: modificarCliente,
-  deleteClient: borrarCliente*/
+  updateClient: modificarCliente,
+  deleteClient: borrarCliente
 
 
 };

@@ -33,6 +33,24 @@ router.get('/existsClient', function(req, res, next) {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//peticiones POST
 router.post('/getClient', function(req, res, next) {
   console.log("ENTRA Get client");
 
@@ -53,14 +71,6 @@ router.post('/getClient', function(req, res, next) {
   
 });
 
-
-
-
-
-
-
-
-//peticiones POST
 
 router.post('/createClient', function(req, res, next) {
   console.log("ENTRA createClient");
@@ -86,6 +96,38 @@ router.post('/createClient', function(req, res, next) {
       res.send('Ocurrio un problema');
     }
     console.log("TERMINA createClient");
+    res.end();
+  });
+});
+
+
+
+
+
+router.post('/deleteClient', function(req, res, next) {
+  console.log("ENTRA delete Client");
+
+  if (req.body.length > 1e6) { 
+    //1mb
+    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    req.connection.destroy();
+  }
+
+  var newClient = req.body;
+  console.log("deleting client: "+ JSON.stringify(newClient.nickName));
+  clientLogic.deleteClient(newClient, function (borrado){
+    //mando esta funcion como callback para que todo sea sincronico
+    if(borrado)//devuelve boolean
+    {
+        console.log("paso final, ya se esta borrando en paralelo");
+        res.send('BORRADO');
+    }
+    else
+    {
+      console.log("paso final, no se borra porque no hay un registro así");
+      res.send('NOT A CLIENT');
+    }
+    console.log("TERMINA delete Client");
     res.end();
   });
 });

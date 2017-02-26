@@ -1,8 +1,9 @@
 {
 	"nickName": "Josega149",
-	"password":"hay que cifrar esto",
+	"password":"password",
 	"description":"I love cooky!",
-	"picture":"p"
+	"picture":"p",
+	"role":"admin"
 }
 
 //nickname es llave primaria
