@@ -1,10 +1,20 @@
 {
 	"nickName": "Josega149",
-	"folder":"subidas",
-	"title":"receta de mi abuela: Lasaña mixta",
-	"description":"La lasaña de mi abuela",
-	"Ingredients":[],
-	"pictureGif":"p"
+	"carpetas": [
+					{
+						"nombreCarpeta":"subidas",
+						"recetasDeLaCarpeta":[
+												{
+													"title":"Jugo de mora de la abuela",
+													"description":"Se hace jugo de mora con el agua y la mora y el azucar.",
+													"pictureGif":"p",
+													"Ingredients":[
+																	 {"ingrediente":"mora"},
+																	 {"ingrediente":"azucar"},
+																	 {"ingrediente":"agua"}
+																  ]
+												}
+											 ]
+					}
+				]
 }
-
-//nickname es llave primaria

@@ -1,4 +1,4 @@
-var baseDatos = require('./baseDatosCollectionClients.js');
+var baseDatos = require('./baseDatosCollectionRecipe.js');
 
 /*
 	Metodos que ofrece la bd para client logic
