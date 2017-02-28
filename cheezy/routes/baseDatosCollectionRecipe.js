@@ -14,83 +14,31 @@ var conectarBD = MongoClient.connect(url, function(err, db) {
 });
 
 
-
-var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente){
-    var existe =false;
+var crearReceta = function(user, folder, recipe){
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto sincrono 
+        console.log('1 crear receta base datos');
+        crearRecetaDB(user, folder, recipe, db,  function(booleanAgrego)
+        {
+          console.log('2 crear receta base datos');
+          console.log('este es el callback! resultado, agrego la receta '+booleanAgrego);
+          
+          db.close();
+        });
+        console.log('3 crear receta base datos');//no se hace hasta que se haga el callback
+      });
+}
+var crearRecetaDB = function(user,folder, recipe, db, callback) {
+    var collection = db.collection('recipeCollection');
+    console.log("creando receta  a "+user+ " en carpeta "+folder+ " receta "+recipe.title);
     
-      MongoClient.connect(url, function(err, db) 
-      {
-        //esta haciendo esto sincrono 
-        console.log('1 existe nickName?');
-        encontrarNickName(nickName, db, existe, function(exists)//esta funcion es el callback de abajo
-        {
-          existe = exists;
-          console.log('2 existe nickName? este es el callback! resultado '+ exists);
-          db.close();
-          console.log('3 existe nickName? Devuelve '+existe);
-          funcionCallbackParaAgregarCliente(existe);
-        });
-        
-      });
-}
-var encontrarNickName = function(nickNameC, db, existe, callback) {
-    // Get the clients collection
-    var collection = db.collection('clientCollection');
-    // Find some clients
-    console.log("buscando a: nickName"+'"'+nickNameC+'"');
-    collection.find({nickName:nickNameC}).toArray(function(err, results){
-          if(err) {
-              console.log('error occured: ' + err);
-              callback(false);
-          }
-          else
-          {
-            console.log("Found the following records para el NickName "+ JSON.stringify(results[0]));
-            //docs es la respuesta a la query
-            if(results.length === 0)
-            {
-              callback(false);
-            }
-            else
-            {
-              callback(true); //repetido
-            }
-          }
-          
-     }); 
-}
+    
+    
 
 
 
 
-
-
-
-
-
-
-
-
-var crearCliente = function(cliente){
-      MongoClient.connect(url, function(err, db) 
-      {
-        //esta haciendo esto sincrono 
-        console.log('1 crear cliente base datos');
-        crearClienteDB(cliente, db,  function(booleanAgrego)
-        {
-          console.log('2 crear cliente base datos');
-          console.log('este es el callback! resultado, agrego al cliente '+booleanAgrego);
-          
-          db.close();
-        });
-        console.log('3 crear cliente base datos');
-      });
-}
-var crearClienteDB = function(cliente, db, callback) {
-    // Get the clients collection
-    var collection = db.collection('clientCollection');
-    // Find some clients
-    console.log("creando a "+cliente.nickName);
     var writeResponse = collection.insert(cliente);
 
     console.log("Response "+writeResponse);
@@ -214,45 +162,10 @@ var modificarClienteDB = function(cliente, db,  callback) {
 
 
 
-
-
-
-
-
-
-
-var borrarCliente = function(nickName, password){
-      MongoClient.connect(url, function(err, db) 
-      {
-        //esta haciendo esto sincrono 
-        console.log('1 eliminar cliente base datos');
-        eliminarClienteDB(nickName, password, db,  function(booleanElimino)
-        {
-          console.log('2 eliminar cliente base datos');
-          console.log('este es el callback! resultado, elimino al cliente '+booleanElimino);
-          db.close();
-        });
-        console.log('3 eliminar cliente base datos');
-      });
-}
-var eliminarClienteDB = function(nickNameC, passwordC, db,  callback) {
-    // Get the clients collection
-    var collection = db.collection('clientCollection');
-    // Find some clients
-    console.log("eliminando a "+nickNameC + " con password "+ passwordC);
-    collection.remove({nickName:nickNameC, password:passwordC});
-
-}
-
-
-
-
 module.exports = {
-  existsClientNickName : existeEsteNickName, //done
-  createClient: crearCliente,
-  getClient: traerCliente,
-  updateClient: modificarCliente,
-  deleteClient: borrarCliente
-
+  createRecipe: crearReceta,
+  getRecipeByType: traerRecetaPorTipo,
+  getRecipeByUser: traerRecetaPorUsuario,
+  likeRecipe: likeAReceta
 };
 
