@@ -1,35 +1,52 @@
+var baseDatos = require('./baseDatosCollectionClients.js');
 var baseDatos = require('./baseDatosCollectionRecipe.js');
 
 /*
 	Metodos que ofrece la bd para client logic
-	createClient.
-	getClient
-	updateClient
-	deleteClient
-	existsClientNickName
+  createRecipe: crearReceta,
+  getRecipeByType: traerRecetaPorTipo,
+  getRecipeByUser: traerRecetaPorUsuario,
+  likeRecipe: likeAReceta
 	
-	clients=
 	{
-		"id":#,
-		"name": x,
-		"description":y,
-		"picture":p
-	}
-
-*/
-var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente)
-{
-	string = nickName.trim();
-	if (string.indexOf(',') > -1  || string.indexOf(';') > -1 || string.indexOf(':') > -1 ||
-	    string.indexOf('{') > -1 ||string.indexOf(' ') > -1 ){
-    // letras peligrosas
-       funcionCallbackParaAgregarCliente("You cant use any of these simbols : , {  nor space");
-	}
-	baseDatos.existsClientNickName(string, funcionCallbackParaAgregarCliente);
+	"nickName": "Josega149",
+	"likesTotal":0,
+	"carpetas": [
+					{
+						"folder":"subidas",
+						"recetasDelFolder":[
+												{
+													"tipo":1,
+													"likes":0,
+													"title":"Jugo de mora de la abuela",
+													"description":"Se hace jugo de mora
+													 con el agua y la mora y el azucar.",
+													"pictureGif":"p",
+													"Ingredients":[
+																	 {"ingrediente":"mora"},
+																	 {"ingrediente":"azucar"},
+																	 {"ingrediente":"agua"}
+																  ]
+												}
+											 ]
+					}
+				]
 }
 
-var crearCliente = function (newClient, funcionCallbackResponse)
+*/
+
+
+
+
+
+
+
+
+var crearReceta = function (nickname, folder, receta)
 {
+	var recipe = {
+	"nickName": nickname,"likesTotal":0,"carpetas": [{"folder":folder,"recetasDelFolder":[receta]}]};
+
 	var nickName = newClient.nickName;
 	existeEsteNickName(nickName, function(existeNickName){//verifica que no haya otro usuario con este nickname
 			//verificar todos datos cliente, se hace sincronico cuando este retorne
@@ -102,9 +119,8 @@ var borrarCliente = function (newClient, funcionCallbackResponse)
 
 
 module.exports = {
-	existsClientNickName : existeEsteNickName, //done
-	createClient: crearCliente,					//done
-	getClient: traerCliente,
-	updateClient: modificarCliente,
-	deleteClient: borrarCliente
+  createRecipe: crearReceta,
+  /**getRecipeByType: traerRecetaPorTipo,
+  getRecipeByUser: traerRecetaPorUsuario,
+  likeRecipe: likeAReceta*/
 };
