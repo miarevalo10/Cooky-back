@@ -63,7 +63,7 @@ router.post('/recipeIngredients', function(req, res, next) {
 
 
 router.post('/addRecipe', function(req, res, next) {
-  console.log("ENTRA Get client");
+  console.log("ENTRA add recipe");
 
   if (req.body.length > 1e6) { 
     //1mb
@@ -78,13 +78,13 @@ router.post('/addRecipe', function(req, res, next) {
   var recipe = format.recipe;
 
 
-  console.log("retrieving client: "+ JSON.stringify(client));
-  clientLogic.getClient(client.nickName, client.password, function(respuesta){
-  		console.log(JSON.stringify(respuesta));
-  		res.send(JSON.stringify(respuesta));// null o el cliente
-  		console.log("TERMINA get client");
-  		res.end();
-  });
+  console.log("creando receta: "+ JSON.stringify(format));
+  recipeLogic.createRecipe(name, pass, folder, recipe);
+
+  //se asume que nada sale mal guardando entonces crea
+  res.send(JSON.stringify(respuesta));
+  console.log("TERMINA add recipe");
+  res.end()
   
 });
 
