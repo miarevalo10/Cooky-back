@@ -14,12 +14,12 @@ var conectarBD = MongoClient.connect(url, function(err, db) {
 });
 
 
-var crearReceta = function(user, folder, recipe){
+var crearReceta = function(recipe){
       MongoClient.connect(url, function(err, db) 
       {
         //esta haciendo esto sincrono 
         console.log('1 crear receta base datos');
-        crearRecetaDB(user, folder, recipe, db,  function(booleanAgrego)
+        crearRecetaDB(recipe, db,  function(booleanAgrego)
         {
           console.log('2 crear receta base datos');
           console.log('este es el callback! resultado, agrego la receta '+booleanAgrego);
@@ -29,29 +29,61 @@ var crearReceta = function(user, folder, recipe){
         console.log('3 crear receta base datos');//no se hace hasta que se haga el callback
       });
 }
-var crearRecetaDB = function(user,folder, recipe, db, callback) {
+var crearRecetaDB = function(recipe, db, callback) {
     var collection = db.collection('recipeCollection');
-    console.log("creando receta  a "+user+ " en carpeta "+folder+ " receta "+recipe.title);
+    console.log("creando receta  a "
+      +recipe.nickName+ " en carpeta "+recipe.carpetas[0].folder+
+       " receta "+recipe.carpetas[0].recetasDelFolder[0].title);
     
+    collection.find({nickName:recipe.nickName,
+                    carpetas.folder:recipe.carpetas[0].folder}).toArray(function(err, results){
+          if(err) {
+              console.log('error occured: ' + err);
+              callback(false);
+          }
+          else
+          {
+            console.log("Found the following records para el cliente "+JSON.stringify(results[0]));
+            //docs es la respuesta a la query
+            if(results.length === 0)
+            {
+              // si no hay carpeta para ese cliente.. existe el cliente?
+                              collection.find({nickName:recipe.nickName}).toArray(function(err, results)
+                              {
+                                            if(err) {
+                                                console.log('error occured: ' + err);
+                                                callback(false);
+                                            }
+                                            else
+                                            {
+                                              console.log("Found the following records para el cliente "+JSON.stringify(results[0]));
+                                              //docs es la respuesta a la query
+                                              if(results.length === 0)
+                                              {
+                                                // si no hay carpeta para ese cliente
+                                                var writeResponse = collection.insert(recipe);
+                                                callback(true);
+                                              }
+                                              else
+                                              {
+                                                //ya hay ese folder y ese cliente (lo más probable)
+                                                callback(true);
+                                              }
+                                            }
+                                            
+                              });
+              var writeResponse = collection.insert(recipe);
+              callback(true);
+            }
+            else
+            {
+              //ya hay ese folder y ese cliente (lo más probable)
+              callback(true);
+            }
+          }
+          
+     }); 
     
-    
-
-
-
-
-    var writeResponse = collection.insert(cliente);
-
-    console.log("Response "+writeResponse);
-    //docs es la respuesta a la query
-    if(writeResponse.writeConcernError === undefined)
-    {
-      callback(true);//agrego
-    }
-    else
-    {
-      callback(false); //no agrego
-    }
-
 }
 
 

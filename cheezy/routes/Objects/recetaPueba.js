@@ -3,8 +3,8 @@
 	"likesTotal":0,
 	"carpetas": [
 					{
-						"nombreCarpeta":"subidas",
-						"recetasDeLaCarpeta":[
+						"folder":"subidas",
+						"recetasDelFolder":[
 												{
 													"tipo":1,
 													"likes":0,
