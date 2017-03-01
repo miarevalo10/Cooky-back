@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 
-var clientLogic = require("./recipeLogic.js")
+var recipeLogic = require("./recipeLogic.js")
 
 // se usa /users/
 
