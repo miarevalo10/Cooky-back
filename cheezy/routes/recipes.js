@@ -14,7 +14,7 @@ router.use(bodyParser.urlencoded({
 }));
 
 
-router.get('/existsClient', function(req, res, next) {
+router.get('/recipeType', function(req, res, next) {
   console.log("ENTRA exist client?");
   if (req.body.length > 1e6) { 
     //1mb
@@ -38,7 +38,30 @@ router.get('/existsClient', function(req, res, next) {
 
 
 
+
+
+
 //peticiones POST
+
+router.post('/recipeIngredients', function(req, res, next) {
+  console.log("ENTRA exist client?");
+  if (req.body.length > 1e6) { 
+    //1mb
+    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    req.connection.destroy();
+  }
+
+  var newClient = req.body;
+  console.log("verifying client "+ JSON.stringify(newClient.nickName));
+  clientLogic.existsClientNickName(newClient.nickName , function(respuesta){
+      res.send(respuesta);// true, false o error
+      console.log("TERMINA exist client?");
+      res.end();
+  });
+  
+});
+
+
 router.post('/getClient', function(req, res, next) {
   console.log("ENTRA Get client");
 

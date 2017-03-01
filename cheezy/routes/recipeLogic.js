@@ -1,5 +1,5 @@
-var baseDatos = require('./baseDatosCollectionClients.js');
-var baseDatos = require('./baseDatosCollectionRecipe.js');
+var baseDatosCliente = require('./baseDatosCollectionClients.js');
+var baseDatosRecipe = require('./baseDatosCollectionRecipe.js');
 
 /*
 	Metodos que ofrece la bd para client logic
@@ -42,25 +42,15 @@ var baseDatos = require('./baseDatosCollectionRecipe.js');
 
 
 
-var crearReceta = function (nickname, folder, receta)
+var crearReceta = function (nickname,password, folder, receta)
 {
-	var recipe = {
-	"nickName": nickname,"likesTotal":0,"carpetas": [{"folder":folder,"recetasDelFolder":[receta]}]};
-
-	var nickName = newClient.nickName;
-	existeEsteNickName(nickName, function(existeNickName){//verifica que no haya otro usuario con este nickname
-			//verificar todos datos cliente, se hace sincronico cuando este retorne
-		if(existeNickName)
+	baseDatosCliente.traerCliente(nickname,password, function(cliente){
+		//el nickname y el password autentican que si es un cliente original
+		if(cliente !== null)
 		{
-			//ya existe entonces no se crea
-			funcionCallbackResponse(false);
-		}
-		else
-		{
-			console.log('no existe');
-			baseDatos.createClient(newClient);
-			funcionCallbackResponse(true);//ya se verifico que si existe el nickname entonces puede retornar ya
-			
+			var recipe = {
+			"nickName": nickname,"likesTotal":0,"carpetas": [{"folder":folder,"recetasDelFolder":[receta]}]};
+			baseDatosRecipe.createRecipe(recipe);
 		}
 	});
 }
