@@ -31,6 +31,7 @@ var crearReceta = function(recipe){
 }
 var crearRecetaDB = function(recipe, db, callback) {
     var collection = db.collection('recipeCollection');
+    console.log(JSON.stringify(recipe);
     console.log("creando receta  a "
       +recipe.nickName+ " en carpeta "+recipe.carpetas[0].folder+
        " receta "+recipe.carpetas[0].recetasDelFolder[0].title);
