@@ -44,7 +44,7 @@ var baseDatosRecipe = require('./baseDatosCollectionRecipe.js');
 
 var crearReceta = function (nickname,password, folder, receta)
 {
-	baseDatosCliente.traerCliente(nickname,password, function(cliente){
+	baseDatosCliente.getClient(nickname,password, function(cliente){
 		//el nickname y el password autentican que si es un cliente original
 		if(cliente !== null)
 		{

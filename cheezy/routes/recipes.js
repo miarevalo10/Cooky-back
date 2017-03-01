@@ -72,7 +72,7 @@ router.post('/addRecipe', function(req, res, next) {
   }
 
   var format = req.body;
-  var name = format.nickname;
+  var name = format.nickName;
   var pass = format.password;
   var folder = format.folder;
   var recipe = format.recipe;
@@ -82,7 +82,7 @@ router.post('/addRecipe', function(req, res, next) {
   recipeLogic.createRecipe(name, pass, folder, recipe);
 
   //se asume que nada sale mal guardando entonces crea
-  res.send(JSON.stringify(respuesta));
+  res.send("OK receta agregada");
   console.log("TERMINA add recipe");
   res.end()
   
