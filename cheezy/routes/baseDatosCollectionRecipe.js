@@ -4,14 +4,6 @@ var MongoClient = require('mongodb').MongoClient
 // Connection URL
 var url = 'mongodb://localhost:27017/cheezyDataBase';
 
-// Use connect method to connect to the server
-// se ejecuta apenas se abre el servidor
-var conectarBD = MongoClient.connect(url, function(err, db) {
-  assert.equal(null, err);
-  console.log("Connected successfully to data base Collection recipe"+url);
-
-  db.close();
-});
 
 
 var crearReceta = function(recipe){
