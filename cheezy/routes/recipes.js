@@ -62,7 +62,7 @@ router.post('/recipeIngredients', function(req, res, next) {
 });
 
 
-router.post('/getClient', function(req, res, next) {
+router.post('/addRecipe', function(req, res, next) {
   console.log("ENTRA Get client");
 
   if (req.body.length > 1e6) { 
@@ -71,7 +71,13 @@ router.post('/getClient', function(req, res, next) {
     req.connection.destroy();
   }
 
-  var client = req.body;
+  var format = req.body;
+  var name = format.nickname;
+  var pass = format.password;
+  var folder = format.folder;
+  var recipe = format.recipe;
+
+
   console.log("retrieving client: "+ JSON.stringify(client));
   clientLogic.getClient(client.nickName, client.password, function(respuesta){
   		console.log(JSON.stringify(respuesta));
