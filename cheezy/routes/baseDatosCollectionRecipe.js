@@ -37,7 +37,7 @@ var crearRecetaDB = function(recipe, db, callback) {
        " receta "+recipe.carpetas[0].recetasDelFolder[0].title);
     
     collection.find({nickName:recipe.nickName,
-                    carpetas.folder:recipe.carpetas[0].folder}).toArray(function(err, results){
+                    folder:recipe.carpetas[0].folder}).toArray(function(err, results){
     //supone que el cliente ya tiene el folder
           if(err) {
               console.log('error occured: ' + err);
