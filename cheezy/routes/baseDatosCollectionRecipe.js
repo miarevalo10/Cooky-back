@@ -17,8 +17,8 @@ var crearReceta = function(recipe){
           console.log('este es el callback! resultado, agrego la receta '+booleanAgrego);
           
           db.close();
+          console.log('3 crear receta base datos');
         });
-        console.log('3 crear receta base datos');//no se hace hasta que se haga el callback
       });
 }
 var crearRecetaDB = function(recipe, db, callback) {
@@ -29,7 +29,7 @@ var crearRecetaDB = function(recipe, db, callback) {
        " receta "+recipe.carpetas[0].recetasDelFolder[0].title);
     
     collection.find({nickName:recipe.nickName,
-                    folder:recipe.carpetas[0].folder}).toArray(function(err, results){
+                    'carpetas.folder':recipe.carpetas[0].folder}).toArray(function(err, results){
     //supone que el cliente ya tiene el folder
           if(err) {
               console.log('error occured: ' + err);
@@ -37,7 +37,8 @@ var crearRecetaDB = function(recipe, db, callback) {
           }
           else
           {
-            console.log("Found the following records para el cliente "+JSON.stringify(results[0]));
+
+            console.log("Cliente existe y folder existe =  "+JSON.stringify(results[0]));
             //docs es la respuesta a la query
             if(results.length === 0)
             { 
@@ -55,6 +56,7 @@ var crearRecetaDB = function(recipe, db, callback) {
                                               //docs es la respuesta a la query
                                               if(results.length === 0)
                                               {
+                                              	console.log("\n El cliente NO tiene registros ");
                                                 // si no hay nada de este cliente
                                                 var writeResponse = collection.insert(recipe);
                                                 callback(true);
@@ -62,6 +64,7 @@ var crearRecetaDB = function(recipe, db, callback) {
                                               else
                                               {
                                                 //no esta el folder pero si el cliente
+                                                console.log("\n El cliente tiene registros y el folder NO existe");
                                                 var writeResponse = collection
                                                 .update({nickName:recipe.nickName}, 
                                                 { 
@@ -76,10 +79,22 @@ var crearRecetaDB = function(recipe, db, callback) {
             else
             {
               //ya hay ese folder y ese cliente (lo más probable)
-              var writeResponse = collection.update({nickName:recipe.nickName}, 
+              console.log("\n El cliente tiene registros y el folder existe");
+              /**var posDeFolder = -1;
+              var carpetaClientes =results[0].carpetas;
+              for(var i=0;i<carpetaClientes.length;i++)
+              {
+              	if(carpetaClientes[i].folder === recipe.carpetas[0].folder)
+              	{
+              		posDeFolder=i;
+              		console.log("\n  Folder numero "+i+" \n");
+              		i=carpetaClientes.length;
+              	}
+              }*/
+              var writeResponse = collection.update({nickName:recipe.nickName,'carpetas.folder':recipe.carpetas[0].folder}, 
               { 
                 //agrega a la lista de recetas la nueva receta dentro del folder
-                 $push: { recetasDelFolder: recipe.carpetas[0].recetasDelFolder[0] } 
+                 $push: { 'carpetas.$.recetasDelFolder' : recipe.carpetas[0].recetasDelFolder[0] }
               });
               callback(true);
             }
