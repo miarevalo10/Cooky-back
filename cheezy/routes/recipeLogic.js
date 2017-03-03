@@ -46,13 +46,27 @@ var crearReceta = function (nickname,password, folder, receta)
 		//el nickname y el password autentican que si es un cliente original
 		if(cliente !== null)
 		{
-			var recipe = {
-			"nickName": nickname,"likesTotal":0,"carpetas": [{"folder":folder,"recetasDelFolder":[receta]}]};
 
-			baseDatosRecipe.createRecipe(recipe);
+			baseDatosRecipe.verificarTituloReceta(nickName, titulo, function(existeElTitulo){
+				if(!existeElTitulo)
+				{
+					var recipe = {
+					"nickName": nickname,"likesTotal":0,"carpetas": [{"folder":folder,"recetasDelFolder":[receta]}]};
+
+					baseDatosRecipe.createRecipe(recipe);
+				}
+			});
 		}
 	});
 }
+
+
+
+
+
+
+
+
 
 var traerCliente = function (clientNickname, clientPassword, funcionCallbackResponse)
 {

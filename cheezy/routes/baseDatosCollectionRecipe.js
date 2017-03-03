@@ -91,12 +91,15 @@ var crearRecetaDB = function(recipe, db, callback) {
               		i=carpetaClientes.length;
               	}
               }*/
-              var writeResponse = collection.update({nickName:recipe.nickName,'carpetas.folder':recipe.carpetas[0].folder}, 
-              { 
-                //agrega a la lista de recetas la nueva receta dentro del folder
-                 $push: { 'carpetas.$.recetasDelFolder' : recipe.carpetas[0].recetasDelFolder[0] }
-              });
-              callback(true);
+
+            var writeResponse = collection.update({nickName:recipe.nickName,'carpetas.folder':recipe.carpetas[0].folder}, 
+		        { 
+		            //agrega a la lista de recetas la nueva receta dentro del folder
+		            $push: {'carpetas.$.recetasDelFolder':recipe.carpetas[0].recetasDelFolder[0]}
+		        });
+		        callback(true);
+              	
+    	              
             }
           }
      }); 
@@ -104,7 +107,46 @@ var crearRecetaDB = function(recipe, db, callback) {
 
 
 
-
+var verificarTituloReceta = function(nickName, titulo, respuesta){
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto sincrono 
+        console.log('1 verificarTituloReceta');
+        verificarTituloRecetaDB(nickName,titulo, db,function(existeElTitulo)
+        {
+          console.log('2 verificarTituloReceta');
+          console.log('este es el callback! resultado, agrego la receta '+existeElTitulo);
+          
+          db.close();
+          respuesta(existeElTitulo);
+          console.log('3 verificarTituloReceta');
+        });
+      });
+}
+var verificarTituloRecetaDB = function(nickName,titulo, db, callback) {
+    var collection = db.collection('recipeCollection');
+    console.log("verificando el titulo de  a "+ titulo +" en las carpetas de "+nickName);
+    
+    collection.find({nickName:nickName,
+                    'carpetas.recetasDelFolder.title':titulo}).toArray(function(err, results){
+    //supone que el cliente ya tiene el folder
+          if(err) {
+              console.log('error occured: ' + err);
+              callback(false);
+          }
+          else
+          {
+          		if(results.length === 0)
+          		{
+          		  callback(false);
+          		}
+          		else
+          		{
+          	    callback(true);
+          		}
+        	}
+    });
+}
 
 
 
