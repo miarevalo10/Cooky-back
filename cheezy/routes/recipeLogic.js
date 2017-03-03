@@ -40,8 +40,6 @@ var baseDatosRecipe = require('./baseDatosCollectionRecipe.js');
 
 
 
-
-
 var crearReceta = function (nickname,password, folder, receta)
 {
 	baseDatosCliente.getClient(nickname,password, function(cliente){
@@ -50,6 +48,7 @@ var crearReceta = function (nickname,password, folder, receta)
 		{
 			var recipe = {
 			"nickName": nickname,"likesTotal":0,"carpetas": [{"folder":folder,"recetasDelFolder":[receta]}]};
+
 			baseDatosRecipe.createRecipe(recipe);
 		}
 	});
