@@ -47,7 +47,7 @@ var crearReceta = function (nickname,password, folder, receta)
 		if(cliente !== null)
 		{
 
-			baseDatosRecipe.verificarTituloReceta(nickName, titulo, function(existeElTitulo){
+			baseDatosRecipe.verificarTituloReceta(nickname, receta.title, function(existeElTitulo){
 				if(!existeElTitulo)
 				{
 					var recipe = {

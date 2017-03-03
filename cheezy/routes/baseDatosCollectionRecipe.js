@@ -123,11 +123,11 @@ var verificarTituloReceta = function(nickName, titulo, respuesta){
         });
       });
 }
-var verificarTituloRecetaDB = function(nickName,titulo, db, callback) {
+var verificarTituloRecetaDB = function(nickname,titulo, db, callback) {
     var collection = db.collection('recipeCollection');
-    console.log("verificando el titulo de  a "+ titulo +" en las carpetas de "+nickName);
+    console.log("verificando el titulo de  a "+ titulo +" en las carpetas de "+nickname);
     
-    collection.find({nickName:nickName,
+    collection.find({nickName:nickname,
                     'carpetas.recetasDelFolder.title':titulo}).toArray(function(err, results){
     //supone que el cliente ya tiene el folder
           if(err) {
@@ -138,10 +138,12 @@ var verificarTituloRecetaDB = function(nickName,titulo, db, callback) {
           {
           		if(results.length === 0)
           		{
+          			console.log("The recipe IS NEW");
           		  callback(false);
           		}
           		else
           		{
+          			console.log("\n YA HAY UNA RECETA CON ESTE NOMBRE");
           	    callback(true);
           		}
         	}
@@ -254,6 +256,7 @@ var modificarClienteDB = function(cliente, db,  callback) {
 
 module.exports = {
   createRecipe: crearReceta,
+  verificarTituloReceta:verificarTituloReceta,
   /**getRecipeByType: traerRecetaPorTipo,
   getRecipeByUser: traerRecetaPorUsuario,
   likeRecipe: likeAReceta
