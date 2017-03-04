@@ -116,7 +116,7 @@ var verificarTituloReceta = function(nickName, titulo, respuesta){
         verificarTituloRecetaDB(nickName,titulo, db,function(existeElTitulo)
         {
           console.log('2 verificarTituloReceta');
-          console.log('este es el callback! resultado, agrego la receta '+existeElTitulo);
+          console.log('este es el callback! existe el titulo= '+existeElTitulo);
           
           db.close();
           respuesta(existeElTitulo);
@@ -153,7 +153,51 @@ var verificarTituloRecetaDB = function(nickname,titulo, db, callback) {
 
 
 
-
+var like = function(nickName, titulo){
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto sincrono 
+        console.log('1 dar like');
+        verificarTituloRecetaDB(nickName,titulo, db,function(diolike)
+        {
+          console.log('2 dar like');
+          console.log('este es el callback! dio like= '+diolike);
+          
+          db.close();
+          console.log('3 dar like');
+        });
+      });
+}
+var likeDB = function(nickname,titulo, db, callback) {
+    var collection = db.collection('recipeCollection');
+    console.log("like al titulo de  a "+ titulo +" en las carpetas de "+nickname);
+    
+    collection.find({nickName:nickname,
+                    'carpetas.recetasDelFolder.title':titulo}).toArray(function(err, results){
+    //supone que el cliente ya tiene el folder
+          if(err) {
+              console.log('error occured: ' + err);
+              callback(false);
+          }
+          else
+          {
+              if(results.length === 0)
+              {
+                console.log("No hay recetas para este usuario");
+                callback(false);
+              }
+              else
+              {
+                var writeResponse = collection.update({nickName:nickname,'carpetas.recetasDelFolder.tile':titulo}, 
+                { 
+                  //agrega un like
+                  $inc: { likesTotal: 1 ,'carpetas.$.recetasDelFolder.$.likes':1}
+                });
+                callback(true);
+              }
+          }
+    });
+}
 
 
 
@@ -258,9 +302,10 @@ var modificarClienteDB = function(cliente, db,  callback) {
 module.exports = {
   createRecipe: crearReceta,
   verificarTituloReceta:verificarTituloReceta,
+  likeRecipe: like
   /**getRecipeByType: traerRecetaPorTipo,
   getRecipeByUser: traerRecetaPorUsuario,
-  likeRecipe: likeAReceta
+  
   deleteRecipe:borrarRecetaDeFavs*/
 };
 

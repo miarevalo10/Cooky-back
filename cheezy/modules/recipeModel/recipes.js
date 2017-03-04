@@ -41,17 +41,16 @@ router.post('/addRecipe', function(req, res, next) {
 router.post('/like', function(req, res, next) {
   console.log("ENTRA dar like");
   if (req.body.length > 1e6) { 
-    //1mb
-    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    //1mb FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
     req.connection.destroy();
   }
   var receta = req.body;
-  console.log("dar like al client "+ receta.nickName+ " y receta "+receta.nombre);
-  clientLogic.like(receta.nickName, receta.nombre);
+  console.log("dar like al client "+ receta.nickName+ " y receta "+receta.titulo);
+  recipeLogic.likeRecipe(receta.nickName, receta.titulo);
   res.send("OK");
   console.log("TERMINA dar like");
   res.end();
-}
+});
 
 
 router.get('/recipeType', function(req, res, next) {

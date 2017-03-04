@@ -39,7 +39,10 @@ var crearReceta = function (nickname,password, folder, receta, callback)
 }
 
 
-
+var like = function (clientNickname, titulo)
+{
+	baseDatosRecipe.likeRecipe(clientNickname, titulo);
+}
 
 
 
@@ -98,6 +101,6 @@ var borrarCliente = function (newClient, funcionCallbackResponse)
 module.exports = {
   createRecipe: crearReceta,
   /**getRecipeByType: traerRecetaPorTipo,
-  getRecipeByUser: traerRecetaPorUsuario,
-  likeRecipe: likeAReceta*/
+  getRecipeByUser: traerRecetaPorUsuario,*/
+  likeRecipe: like
 };
