@@ -56,9 +56,11 @@ var traerCliente = function (clientNickname, clientPassword, funcionCallbackResp
 	{
 		funcionCallbackResponse(null);
 	}
-	console.log('datos definidos... buscando cliente... ');
-	baseDatos.getClient(clientNickname, clientPassword , funcionCallbackResponse);
-	
+	else
+	{
+		console.log('datos definidos... buscando cliente... ');
+		baseDatos.getClient(clientNickname, clientPassword , funcionCallbackResponse);
+	}
 }
 
 var modificarCliente = function (cliente, funcionCallbackResponse)

@@ -15,6 +15,45 @@ router.use(bodyParser.urlencoded({
 }));
 
 
+
+router.post('/addRecipe', function(req, res, next) {
+  console.log("ENTRA add recipe");
+  if (req.body.length > 1e6) { 
+    //1mb
+    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    req.connection.destroy();
+  }
+  var format = req.body;
+  var name = format.nickName;
+  var pass = format.password;
+  var folder = format.folder;
+  var recipe = format.recipe;
+  console.log("creando receta: "+ JSON.stringify(format));
+  recipeLogic.createRecipe(name, pass, folder, recipe, function(sePuedeAgregar){
+        //se asume que nada sale mal guardando entonces crea
+        res.send(sePuedeAgregar);
+        console.log("TERMINA add recipe");
+        res.end();
+  });
+});
+
+
+router.post('/like', function(req, res, next) {
+  console.log("ENTRA dar like");
+  if (req.body.length > 1e6) { 
+    //1mb
+    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    req.connection.destroy();
+  }
+  var receta = req.body;
+  console.log("dar like al client "+ receta.nickName+ " y receta "+receta.nombre);
+  clientLogic.like(receta.nickName, receta.nombre);
+  res.send("OK");
+  console.log("TERMINA dar like");
+  res.end();
+}
+
+
 router.get('/recipeType', function(req, res, next) {
   console.log("ENTRA exist client?");
   if (req.body.length > 1e6) { 
@@ -35,15 +74,6 @@ router.get('/recipeType', function(req, res, next) {
 
 
 
-
-
-
-
-
-
-
-//peticiones POST
-
 router.post('/recipeIngredients', function(req, res, next) {
   console.log("ENTRA exist client?");
   if (req.body.length > 1e6) { 
@@ -51,7 +81,6 @@ router.post('/recipeIngredients', function(req, res, next) {
     // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
     req.connection.destroy();
   }
-
   var newClient = req.body;
   console.log("verifying client "+ JSON.stringify(newClient.nickName));
   clientLogic.existsClientNickName(newClient.nickName , function(respuesta){
@@ -62,60 +91,6 @@ router.post('/recipeIngredients', function(req, res, next) {
   
 });
 
-
-router.post('/addRecipe', function(req, res, next) {
-  console.log("ENTRA add recipe");
-
-  if (req.body.length > 1e6) { 
-    //1mb
-    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
-    req.connection.destroy();
-  }
-
-  var format = req.body;
-  var name = format.nickName;
-  var pass = format.password;
-  var folder = format.folder;
-  var recipe = format.recipe;
-
-
-  console.log("creando receta: "+ JSON.stringify(format));
-  recipeLogic.createRecipe(name, pass, folder, recipe, function(sePuedeAgregar){
-        //se asume que nada sale mal guardando entonces crea
-        res.send(sePuedeAgregar);
-        console.log("TERMINA add recipe");
-        res.end();
-  });
-});
-
-
-router.post('/createClient', function(req, res, next) {
-  console.log("ENTRA createClient");
-
-  if (req.body.length > 1e6) { 
-    //1mb
-    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
-    req.connection.destroy();
-  }
-
-  var newClient = req.body;
-  console.log("creating client: "+ JSON.stringify(newClient.nickName));
-  clientLogic.createClient(newClient, function (creado){
-    //mando esta funcion como callback para que todo sea sincronico
-    if(creado)//devuelve boolean
-    {
-        console.log("paso final, ya se esta creando en paralelo");
-        res.send('OK');
-    }
-    else
-    {
-      console.log("paso final, no se agrega nada porque nickname repetido");
-      res.send('Ocurrio un problema');
-    }
-    console.log("TERMINA createClient");
-    res.end();
-  });
-});
 
 
 

@@ -1,5 +1,5 @@
 "use strict";
-var baseDatosCliente = require('./baseDatosCollectionClients.js');
+var baseDatosCliente = require('../clientModel/baseDatosCollectionClients.js');
 var baseDatosRecipe = require('./baseDatosCollectionRecipe.js');
 
 /*
@@ -8,38 +8,7 @@ var baseDatosRecipe = require('./baseDatosCollectionRecipe.js');
   getRecipeByType: traerRecetaPorTipo,
   getRecipeByUser: traerRecetaPorUsuario,
   likeRecipe: likeAReceta
-	
-	{
-	"nickName": "Josega149",
-	"likesTotal":0,
-	"carpetas": [
-					{
-						"folder":"subidas",
-						"recetasDelFolder":[
-												{
-													"tipo":1,
-													"likes":0,
-													"title":"Jugo de mora de la abuela",
-													"description":"Se hace jugo de mora
-													 con el agua y la mora y el azucar.",
-													"pictureGif":"p",
-													"Ingredients":[
-																	 {"ingrediente":"mora"},
-																	 {"ingrediente":"azucar"},
-																	 {"ingrediente":"agua"}
-																  ]
-												}
-											 ]
-					}
-				]
-}
-
 */
-
-
-
-
-
 
 var crearReceta = function (nickname,password, folder, receta, callback)
 {
@@ -47,7 +16,6 @@ var crearReceta = function (nickname,password, folder, receta, callback)
 		//el nickname y el password autentican que si es un cliente original
 		if(cliente !== null)
 		{
-
 			baseDatosRecipe.verificarTituloReceta(nickname, receta.title, function(existeElTitulo){
 				if(!existeElTitulo)
 				{
@@ -61,19 +29,14 @@ var crearReceta = function (nickname,password, folder, receta, callback)
 				{
 					callback("NO");
 				}
-
 			});
 		}
 		else
 		{
 			callback("NO");
 		}
-		
 	});
 }
-
-
-
 
 
 
@@ -89,7 +52,6 @@ var traerCliente = function (clientNickname, clientPassword, funcionCallbackResp
 	}
 	console.log('datos definidos... buscando cliente... ');
 	baseDatos.getClient(clientNickname, clientPassword , funcionCallbackResponse);
-	
 }
 
 var modificarCliente = function (cliente, funcionCallbackResponse)

@@ -1,7 +1,7 @@
 {
 	"nickName": "Josega149",
 	"password":"password",
-	"description":"I love cooky!",
+	"Nombre":"Jose Gabriel Tamura",
 	"picture":"p",
 	"role":"admin"
 }

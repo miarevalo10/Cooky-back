@@ -15,7 +15,7 @@ router.use(bodyParser.urlencoded({
 }));
 
 
-router.get('/existsClient', function(req, res, next) {
+router.post('/existsClient', function(req, res, next) {
   console.log("ENTRA exist client?");
   if (req.body.length > 1e6) { 
     //1mb
