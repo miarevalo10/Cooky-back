@@ -158,7 +158,7 @@ var like = function(nickName, titulo){
       {
         //esta haciendo esto sincrono 
         console.log('1 dar like');
-        verificarTituloRecetaDB(nickName,titulo, db,function(diolike)
+        likeDB(nickName,titulo, db,function(diolike)
         {
           console.log('2 dar like');
           console.log('este es el callback! dio like= '+diolike);
@@ -188,12 +188,32 @@ var likeDB = function(nickname,titulo, db, callback) {
               }
               else
               {
-                var writeResponse = collection.update({nickName:nickname,'carpetas.recetasDelFolder.tile':titulo}, 
-                { 
-                  //agrega un like
-                  $inc: { likesTotal: 1 ,'carpetas.$.recetasDelFolder.$.likes':1}
+                var writeResponse = collection.update({nickName:nickname,'carpetas.recetasDelFolder.title':titulo}, 
+                {//agrega un like
+                  $inc: {likesTotal: 1}
+                }
+                //,'carpetas.$.recetasDelFolder.$.likes':1
+                );
+                collection.find({nickName:nickname,'carpetas.recetasDelFolder.title':titulo})
+                .forEach(function(post) {
+                    if (post.carpetas) {
+                        post.carpetas.forEach(function(folder) {
+                          if (folder.recetasDelFolder) {
+                            //para cada receta en el folder reviso si el titulo coincide
+                              folder.recetasDelFolder.forEach(function(receta) {
+                                if (receta.title) {
+                                    if (receta.title === titulo) {
+                                      receta.likes += 1;
+                                    }
+                                }
+                              });
+                          }
+                        });
+
+                      collection.save(post);
+                      callback(true);
+                    }
                 });
-                callback(true);
               }
           }
     });
