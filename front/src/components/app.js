@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import YTSearch from 'youtube-api-search';
-import Buscador from './buscador';
+import axios from 'axios';
 import VideoPlayer from './video_player';
 import Sugerencias from './sugerencias';
 
