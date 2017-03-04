@@ -20,7 +20,7 @@ var baseDatos = require('./baseDatosCollectionClients.js');
 */
 var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente)
 {
-	string = nickName.trim();
+	var string = nickName.trim();
 	if (string.indexOf(',') > -1  || string.indexOf(';') > -1 || string.indexOf(':') > -1 ||
 	    string.indexOf('{') > -1 ||string.indexOf(' ') > -1 ){
     // letras peligrosas
