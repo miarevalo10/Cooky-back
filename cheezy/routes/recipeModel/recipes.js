@@ -1,10 +1,11 @@
+"use strict";
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 
 var recipeLogic = require("./recipeLogic.js")
 
-// se usa /users/
+// se usa /recipes/
 
 
 router.use(bodyParser.json());

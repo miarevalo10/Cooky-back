@@ -1,3 +1,4 @@
+"use strict";
 var baseDatosCliente = require('./baseDatosCollectionClients.js');
 var baseDatosRecipe = require('./baseDatosCollectionRecipe.js');
 

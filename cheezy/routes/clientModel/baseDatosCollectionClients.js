@@ -1,3 +1,4 @@
+"use strict";
 var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 
@@ -12,15 +13,6 @@ var conectarBD = MongoClient.connect(url, function(err, db) {
 
   db.close();
 });
-
-
-
-
-
-
-
-
-
 
 
 

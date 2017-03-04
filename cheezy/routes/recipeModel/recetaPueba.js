@@ -17,7 +17,7 @@
 																	 {"ingrediente":"agua"}
 																  ]
 												}
-											 ]
+											]
 					}
 				]
 }
