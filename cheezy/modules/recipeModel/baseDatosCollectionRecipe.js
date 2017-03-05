@@ -340,7 +340,27 @@ var eliminarRecetaDB = function(receta, db,  callback) {
     var collection = db.collection('recipeCollection');
     // Find some clients
     console.log("eliminando de "+receta.nickName + " la receta "+ receta.title);
-    collection.remove({nickName:receta.nickName, 'carpetas.recetasDelFolder.title':receta.title});
+    collection.find({nickName:receta.nickName,'carpetas.recetasDelFolder.title':receta.title})
+      .forEach(function(post) {
+            if (post.carpetas) {
+                        post.carpetas.forEach(function(folder) {
+                          if (folder.recetasDelFolder) {
+                            //para cada receta en el folder reviso si el titulo coincide
+                              folder.recetasDelFolder.forEach(function(recetaB) {
+                                if (recetaB.title) {
+                                    if (recetaB.title === receta.title) {
+                                      //console.log(folder.recetasDelFolder);
+                                      folder.recetasDelFolder = folder.recetasDelFolder.filter(function(el) { return el.title !== receta.title; });
+                                    }
+                                }
+                              });
+                          }
+                        });
+
+                      collection.save(post);
+                      callback(true);
+            }
+      });
 
 }
 

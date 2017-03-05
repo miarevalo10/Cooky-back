@@ -84,7 +84,7 @@ var borrarReceta = function (receta, funcionCallbackResponse)
 		if(cliente !== null)
 		{
 			baseDatosRecipe.verificarTituloReceta(receta.nickName, receta.title, function(existeElTitulo){
-				if(!existeElTitulo)
+				if(existeElTitulo)
 				{
 					baseDatosRecipe.deleteRecipe(receta);
 					funcionCallbackResponse(true);
