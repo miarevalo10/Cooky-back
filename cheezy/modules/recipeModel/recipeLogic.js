@@ -87,6 +87,21 @@ function recetaPorTipo(tipo, callback)
 	}
 }
 
+var traerRecetaPorUsuario = function (nickname,password, callback)
+{
+	baseDatosCliente.getClient(nickname,password, function(cliente){
+		//el nickname y el password autentican que si es un cliente original
+		if(cliente !== null)
+		{
+			baseDatosRecipe.getRecipeByUser(nickName, callback);
+		}
+		else
+		{
+			callback("NO");
+		}
+	});
+}
+
 
 var borrarReceta = function (receta, funcionCallbackResponse)
 {
@@ -118,7 +133,7 @@ var borrarReceta = function (receta, funcionCallbackResponse)
 module.exports = {
   createRecipe: crearReceta,
   getRecipeByType: recetaPorTipo,
-  /**getRecipeByUser: traerRecetaPorUsuario,*/
+  getRecipeByUser: traerRecetaPorUsuario,
   deleteRecipe:borrarReceta,
   likeRecipe: like
 };

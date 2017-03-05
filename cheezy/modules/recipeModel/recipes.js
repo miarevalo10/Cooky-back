@@ -59,7 +59,6 @@ router.post('/getRecipeByType', function(req, res, next) {
     //1mb FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
     req.connection.destroy();
   }
-
   var tipo = req.body;
   console.log("verifying type "+ tipo.type);
   recipeLogic.getRecipeByType(tipo.type , function(respuesta){
@@ -71,6 +70,22 @@ router.post('/getRecipeByType', function(req, res, next) {
   
 });
 
+
+router.post('/getRecipeByUser', function(req, res, next) {
+  console.log("ENTRA get by user");
+  if (req.body.length > 1e6) { 
+    //1mb FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    req.connection.destroy();
+  }
+  var user = req.body;
+  console.log("verifying user "+ user.nickName);
+  recipeLogic.getRecipeByType(user.nickName,user.password , function(respuesta){
+      res.send(respuesta);//la lista
+      console.log("TERMINA get by user");
+      res.end();
+  });
+  
+});
 
 
 router.post('/recipeIngredients', function(req, res, next) {

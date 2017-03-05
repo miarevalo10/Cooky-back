@@ -296,6 +296,40 @@ function agregarRecetaLista(lista,receta)
 }
 
 
+var traerRecetaPorUsuario= function(nickname,  callbackListaRecetas){
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto sincrono 
+        traerRecetaUsuarioDB(nickname, db,  function(listaRecetas)
+        {
+          db.close();
+          callbackListaRecetas(listaRecetas);
+        });
+      });
+}
+var traerRecetaTipoDB = function(nickname, db,  callback) {
+    // Get the clients collection
+    var collection = db.collection('recipeCollection');
+    // Find some clients
+    var listaRecetas=[];
+    console.log("trayendo mejores recetas de "+nickname);
+    collection.find({nickName:nickname})
+    .toArray(function(err, results){
+          if(err) {
+              console.log('error occured: ' + err);
+              callback(false);
+          }
+          else
+          {
+            //docs es la respuesta a la query
+            callback(results[0]);
+          }
+          
+     });
+}
+
+
+
 
 
 var borrarRecetaDeFavs = function(receta){
@@ -347,8 +381,7 @@ module.exports = {
   verificarTituloReceta:verificarTituloReceta,
   likeRecipe: like,
   getRecipeByType: traerRecetaPorTipo,
-  /**getRecipeByUser: traerRecetaPorUsuario,*/
-  
+  getRecipeByUser: traerRecetaPorUsuario,
   deleteRecipe:borrarRecetaDeFavs
 };
 
