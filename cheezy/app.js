@@ -8,9 +8,12 @@ var bodyParser = require('body-parser');
 
 var users = require('./modules/clientModel/users');
 var recipes = require('./modules/recipeModel/recipes');
+var cors = require('cors')
 
 var app = express();
 
+
+app.use(cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
