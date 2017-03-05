@@ -77,22 +77,27 @@ var modificarCliente = function (cliente, funcionCallbackResponse)
 	});
 }
 
-var borrarCliente = function (newClient, funcionCallbackResponse)
+var borrarReceta = function (receta, funcionCallbackResponse)
 {
-	var nickName = newClient.nickName;
-	existeEsteNickName(nickName, function(existeNickName){
-		if(existeNickName)
+	baseDatosCliente.getClient(receta.nickName,receta.password, function(cliente){
+		//el nickname y el password autentican que si es un cliente original
+		if(cliente !== null)
 		{
-			//ya existe entonces se puede borrar
-			console.log('si existe');
-			baseDatos.deleteClient(newClient.nickName, newClient.password);
-			funcionCallbackResponse(true);//si se borra
+			baseDatosRecipe.verificarTituloReceta(receta.nickName, receta.title, function(existeElTitulo){
+				if(!existeElTitulo)
+				{
+					baseDatosRecipe.deleteRecipe(receta);
+					funcionCallbackResponse(true);
+				}
+				else
+				{
+					funcionCallbackResponse(false);
+				}
+			});
 		}
 		else
 		{
-			console.log('no existe');
-			funcionCallbackResponse(false);//no existe entonces no se puede borrar
-			
+			funcionCallbackResponse(false);
 		}
 	});
 }
@@ -102,5 +107,6 @@ module.exports = {
   createRecipe: crearReceta,
   /**getRecipeByType: traerRecetaPorTipo,
   getRecipeByUser: traerRecetaPorUsuario,*/
+  deleteRecipe:borrarReceta,
   likeRecipe: like
 };

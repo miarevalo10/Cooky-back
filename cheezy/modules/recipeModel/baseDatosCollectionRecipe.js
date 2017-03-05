@@ -319,13 +319,39 @@ var modificarClienteDB = function(cliente, db,  callback) {
 
 
 
+
+
+var borrarRecetaDeFavs = function(receta){
+      MongoClient.connect(url, function(err, db) 
+      {
+        //esta haciendo esto sincrono 
+        console.log('1 eliminar receta base datos');
+        eliminarRecetaDB(receta, db,  function(booleanElimino)
+        {
+          console.log('2 eliminar receta base datos');
+          console.log('este es el callback! resultado, elimino receta '+booleanElimino);
+          db.close();
+        });
+        console.log('3 eliminar receta base datos');
+      });
+}
+var eliminarRecetaDB = function(receta, db,  callback) {
+    // Get the clients collection
+    var collection = db.collection('recipeCollection');
+    // Find some clients
+    console.log("eliminando de "+receta.nickName + " la receta "+ receta.title);
+    collection.remove({nickName:receta.nickName, 'carpetas.recetasDelFolder.title':receta.title});
+
+}
+
+
 module.exports = {
   createRecipe: crearReceta,
   verificarTituloReceta:verificarTituloReceta,
-  likeRecipe: like
+  likeRecipe: like,
   /**getRecipeByType: traerRecetaPorTipo,
-  getRecipeByUser: traerRecetaPorUsuario,
+  getRecipeByUser: traerRecetaPorUsuario,*/
   
-  deleteRecipe:borrarRecetaDeFavs*/
+  deleteRecipe:borrarRecetaDeFavs
 };
 

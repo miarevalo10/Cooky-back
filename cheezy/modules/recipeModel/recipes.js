@@ -45,8 +45,8 @@ router.post('/like', function(req, res, next) {
     req.connection.destroy();
   }
   var receta = req.body;
-  console.log("dar like al client "+ receta.nickName+ " y receta "+receta.titulo);
-  recipeLogic.likeRecipe(receta.nickName, receta.titulo);
+  console.log("dar like al client "+ receta.nickName+ " y receta "+receta.title);
+  recipeLogic.likeRecipe(receta.nickName, receta.title);
   res.send("OK");
   console.log("TERMINA dar like");
   res.end();
@@ -101,8 +101,8 @@ router.post('/deleteRecipe', function(req, res, next) {
     req.connection.destroy();
   }
   var recipe = req.body;
-  console.log("deleting recipe: "+ recipe.title + " from folder "+recipe.folder+ " of client "+ recipe.nickName);
-  clientLogic.deleteClient(recipe, function (borrado){
+  console.log("deleting recipe: "+ recipe.title + " of client "+ recipe.nickName);
+  recipeLogic.deleteRecipe(recipe, function (borrado){
     //mando esta funcion como callback para que todo sea sincronico
     if(borrado)//devuelve boolean
     {
