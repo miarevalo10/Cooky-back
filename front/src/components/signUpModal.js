@@ -25,18 +25,19 @@ class SignUpModal extends Component {
 
     //verifies if username already exists
     checkNickname() {
-        console.log("check nickname");
+        console.log("checks nickname");
         console.log(this.state.nickName);
         console.log(this.state.nombre);
         console.log(this.state.password);
-        axios.post(ROOT_URL + "/existsClient", {
+        axios.post(ROOT_URL + "/users/existsClient", {
             nickName: this.state.nickName,
             nombre: this.state.nombre,
             password: this.state.password,
             picture: this.state.picture,
             role: this.state.role
         }).then(response => {
-            if (response.data === 'true') {
+          console.log(response);
+            if (response.data === false) {
                 this.addUser();
             }
         })
@@ -46,7 +47,7 @@ class SignUpModal extends Component {
     addUser() {
         console.log("adds user");
         console.log(this.state.nickName);
-        axios.post(ROOT_URL + "/createClient", {
+        axios.post(ROOT_URL + "/users/createClient", {
             nickName: this.state.nickName,
             nombre: this.state.nombre,
             password: this.state.password,
