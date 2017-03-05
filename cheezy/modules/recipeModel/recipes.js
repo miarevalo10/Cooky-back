@@ -61,9 +61,9 @@ router.post('/getRecipeByType', function(req, res, next) {
   }
 
   var tipo = req.body;
-  console.log("verifying client "+ tipo.type);
+  console.log("verifying type "+ tipo.type);
   recipeLogic.getRecipeByType(tipo.type , function(respuesta){
-	  	res.send(respuesta);// true, false o error
+	  	res.send(respuesta);//la lista
       console.log("\n Mejores por tipo \n"+ respuesta);
 	    console.log("TERMINA get by type");
 	    res.end();

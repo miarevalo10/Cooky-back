@@ -68,16 +68,16 @@ function recetaPorTipo(tipo, callback)
 {
 	if(tipo===1)
 	{
-		callback( mejoresRecetasTipo1);
+		callback(mejoresRecetasTipo1);
 	}
 	//el else no es necesario pero por si acaso
 	else if(tipo===2)
 	{
-		callback( mejoresRecetasTipo2);
+		callback(mejoresRecetasTipo2);
 	}
 	else if(tipo===3)
 	{
-		callback( mejoresRecetasTipo3);
+		callback(mejoresRecetasTipo3);
 	}
 }
 

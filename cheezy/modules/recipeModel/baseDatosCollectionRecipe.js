@@ -226,7 +226,7 @@ var traerRecetaPorTipo= function(tipo, likesMinimos, callbackListaRecetas){
       MongoClient.connect(url, function(err, db) 
       {
         //esta haciendo esto sincrono 
-        traerRecetaTipoDB(tipo,likesMinimos, db,  function(booleanTrajo, listaRecetas)
+        traerRecetaTipoDB(tipo,likesMinimos, db,  function(listaRecetas)
         {
           db.close();
           callbackListaRecetas(listaRecetas);
@@ -266,12 +266,12 @@ var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
                         var recetaActual = carpetaActual.recetasDelFolder[j];
                         if (recetaActual.tipo === tipo && recetaActual.likes >= likesMinimos)
                         {
-                          console.log(recetaActual);
                           agregarRecetaLista(listaRecetas,recetaActual);
                         }
                     }
                 }
               }
+              console.log(listaRecetas);
               callback(listaRecetas);
             }
           }
