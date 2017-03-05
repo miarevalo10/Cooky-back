@@ -226,14 +226,11 @@ var traerRecetaPorTipo= function(tipo, likesMinimos, callbackListaRecetas){
       MongoClient.connect(url, function(err, db) 
       {
         //esta haciendo esto sincrono 
-        console.log('1 traer receta por tipo base datos');
         traerRecetaTipoDB(tipo,likesMinimos, db,  function(booleanTrajo, listaRecetas)
         {
-          console.log('2 traer receta por tipo base datos');
           db.close();
           callbackListaRecetas(listaRecetas);
         });
-        console.log('3 traer recetas por tipo base datos');
       });
 }
 var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
@@ -244,7 +241,33 @@ var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
     console.log("trayendo mejores recetas por tipo "+ tipo);
     collection.find({'carpetas.recetasDelFolder.tipo':tipo,
                      'carpetas.recetasDelFolder.likes':{ $gte: likesMinimos }})
-      .sort( { 'carpetas.recetasDelFolder.likes': -1 } )
+    .toArray(function(err, results){
+          if(err) {
+              console.log('error occured: ' + err);
+              callback(false);
+          }
+          else
+          {
+            //docs es la respuesta a la query
+            if(results.length === 0)
+            {
+              callback([]);
+            }
+            else
+            {
+              for(var i=0; i<results.length;i++)
+              {
+                 var carpetaActual = results.carpetas[i];
+                 for(var j=0; j< results.length;j++)
+                 {
+                    var recetaActual = carpetaActual.recetasDelFolder[j];
+                    
+                 }
+              }
+            }
+          }
+          
+     }); /**
       .forEach(function(post) {
             if (post.carpetas) {
                         post.carpetas.forEach(function(folder) {
@@ -254,22 +277,24 @@ var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
                                 if (recetaB.title) {
                                     if (recetaB.tipo === tipo && recetaB.likes >= likesMinimos)
                                     {
-                                      //console.log(folder.recetasDelFolder);
-                                      agregarRecetaLista(listaRecestas,recetaB);
+                                      console.log(recetaB);
+                                      agregarRecetaLista(listaRecetas,recetaB);
                                     }
                                 }
                               });
                           }
                         });
             }
-      });
+      console.log(listaRecetas);
       callback(listaRecetas);
+      });*/
+
 }
 function agregarRecetaLista(lista,receta)
 {
   //es como un insertion sort
   lista.push(receta);
-  var i = lista.length;
+  var i = lista.length-1;
   while(i>0 && lista[i].likes > lista[i-1])
   {
     var medio=lista[i-1];

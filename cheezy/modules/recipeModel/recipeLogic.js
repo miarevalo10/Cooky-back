@@ -54,36 +54,30 @@ var getRecipeByTypeSetListas = function ()
 	console.log("\n recuperando listas de mejores tipos");
 	baseDatosRecipe.getRecipeByType(1, 0, function(lista){
 		mejoresRecetasTipo1= lista;
-		console.log("\n lista 1 ");
-		console.log("\n "+ mejoresRecetasTipo1);
 	});
 	baseDatosRecipe.getRecipeByType(2, 0, function(lista){
 		mejoresRecetasTipo2= lista;
-		console.log("\n lista 2 ");
-		console.log("\n "+ mejoresRecetasTipo2);
 	});
 	baseDatosRecipe.getRecipeByType(3, 0, function(lista){
 		mejoresRecetasTipo3= lista;
-		console.log("\n lista 3 ");
-		console.log("\n "+ mejoresRecetasTipo3);
 	});
 }
 getRecipeByTypeSetListas();
 
-function recetaPorTipo(tipo)
+function recetaPorTipo(tipo, callback)
 {
 	if(tipo===1)
 	{
-		return mejoresRecetasTipo1;
+		callback( mejoresRecetasTipo1);
 	}
 	//el else no es necesario pero por si acaso
 	else if(tipo===2)
 	{
-		return mejoresRecetasTipo2;
+		callback( mejoresRecetasTipo2);
 	}
 	else if(tipo===3)
 	{
-		return mejoresRecetasTipo3;
+		callback( mejoresRecetasTipo3);
 	}
 }
 

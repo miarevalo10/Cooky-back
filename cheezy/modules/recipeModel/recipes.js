@@ -53,19 +53,19 @@ router.post('/like', function(req, res, next) {
 });
 
 
-router.get('/recipeType', function(req, res, next) {
-  console.log("ENTRA exist client?");
+router.post('/getRecipeByType', function(req, res, next) {
+  console.log("ENTRA get by type");
   if (req.body.length > 1e6) { 
-    //1mb
-    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    //1mb FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
     req.connection.destroy();
   }
 
-  var newClient = req.body;
-  console.log("verifying client "+ JSON.stringify(newClient.nickName));
-  clientLogic.existsClientNickName(newClient.nickName , function(respuesta){
+  var tipo = req.body;
+  console.log("verifying client "+ tipo.type);
+  recipeLogic.getRecipeByType(tipo.type , function(respuesta){
 	  	res.send(respuesta);// true, false o error
-	    console.log("TERMINA exist client?");
+      console.log("\n Mejores por tipo \n"+ respuesta);
+	    console.log("TERMINA get by type");
 	    res.end();
   });
   
