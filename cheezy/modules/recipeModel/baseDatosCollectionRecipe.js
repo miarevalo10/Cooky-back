@@ -257,39 +257,28 @@ var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
             {
               for(var i=0; i<results.length;i++)
               {
-                 var carpetaActual = results.carpetas[i];
-                 for(var j=0; j< results.length;j++)
-                 {
-                    var recetaActual = carpetaActual.recetasDelFolder[j];
-                    
-                 }
+                var usuarioActual = results[i];
+                for(var k=0; k< usuarioActual.carpetas.length;k++)
+                {
+                    var carpetaActual = usuarioActual.carpetas[i];
+                    for(var j=0; j< carpetaActual.recetasDelFolder.length;j++)
+                    {
+                        var recetaActual = carpetaActual.recetasDelFolder[j];
+                        if (recetaActual.tipo === tipo && recetaActual.likes >= likesMinimos)
+                        {
+                          console.log(recetaActual);
+                          agregarRecetaLista(listaRecetas,recetaActual);
+                        }
+                    }
+                }
               }
+              callback(listaRecetas);
             }
           }
           
-     }); /**
-      .forEach(function(post) {
-            if (post.carpetas) {
-                        post.carpetas.forEach(function(folder) {
-                          if (folder.recetasDelFolder) {
-                            //para cada receta en el folder reviso si el titulo coincide
-                              folder.recetasDelFolder.forEach(function(recetaB) {
-                                if (recetaB.title) {
-                                    if (recetaB.tipo === tipo && recetaB.likes >= likesMinimos)
-                                    {
-                                      console.log(recetaB);
-                                      agregarRecetaLista(listaRecetas,recetaB);
-                                    }
-                                }
-                              });
-                          }
-                        });
-            }
-      console.log(listaRecetas);
-      callback(listaRecetas);
-      });*/
-
+     });
 }
+
 function agregarRecetaLista(lista,receta)
 {
   //es como un insertion sort
