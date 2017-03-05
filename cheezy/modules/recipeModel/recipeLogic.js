@@ -22,8 +22,11 @@ var crearReceta = function (nickname,password, folder, receta, callback)
 					var recipe = {
 					"nickName": nickname,"likesTotal":0,"carpetas": [{"folder":folder,"recetasDelFolder":[receta]}]};
 
-					baseDatosRecipe.createRecipe(recipe);
+					baseDatosRecipe.createRecipe(recipe, function(){
+						getRecipeByTypeSetListas();
+					});
 					callback("OK");
+
 				}
 				else
 				{
@@ -41,7 +44,10 @@ var crearReceta = function (nickname,password, folder, receta, callback)
 
 var like = function (clientNickname, titulo)
 {
-	baseDatosRecipe.likeRecipe(clientNickname, titulo);
+	baseDatosRecipe.likeRecipe(clientNickname, titulo, function(){
+		getRecipeByTypeSetListas();
+	});
+
 }
 
 
@@ -93,6 +99,7 @@ var borrarReceta = function (receta, funcionCallbackResponse)
 				{
 					baseDatosRecipe.deleteRecipe(receta);
 					funcionCallbackResponse(true);
+					getRecipeByTypeSetListas();
 				}
 				else
 				{

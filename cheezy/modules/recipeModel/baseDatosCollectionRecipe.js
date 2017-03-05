@@ -7,7 +7,7 @@ var url = 'mongodb://localhost:27017/cheezyDataBase';
 
 
 
-var crearReceta = function(recipe){
+var crearReceta = function(recipe, callback){
       MongoClient.connect(url, function(err, db) 
       {
         //esta haciendo esto sincrono 
@@ -19,6 +19,7 @@ var crearReceta = function(recipe){
           
           db.close();
           console.log('3 crear receta base datos');
+          callback();
         });
       });
 }
@@ -153,7 +154,7 @@ var verificarTituloRecetaDB = function(nickname,titulo, db, callback) {
 
 
 
-var like = function(nickName, titulo){
+var like = function(nickName, titulo, callback){
       MongoClient.connect(url, function(err, db) 
       {
         //esta haciendo esto sincrono 
@@ -165,6 +166,7 @@ var like = function(nickName, titulo){
           
           db.close();
           console.log('3 dar like');
+          callback();
         });
       });
 }
@@ -271,7 +273,7 @@ var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
                     }
                 }
               }
-              console.log(listaRecetas);
+              //console.log(listaRecetas);
               callback(listaRecetas);
             }
           }
