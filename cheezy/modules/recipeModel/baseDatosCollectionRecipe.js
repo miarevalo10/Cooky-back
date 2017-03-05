@@ -233,7 +233,7 @@ var traerRecetaPorTipo= function(tipo, likesMinimos, callbackListaRecetas){
           db.close();
           callbackListaRecetas(listaRecetas);
         });
-        console.log('3 traer cliente base datos');
+        console.log('3 traer recetas por tipo base datos');
       });
 }
 var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
@@ -244,6 +244,7 @@ var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
     console.log("trayendo mejores recetas por tipo "+ tipo);
     collection.find({'carpetas.recetasDelFolder.tipo':tipo,
                      'carpetas.recetasDelFolder.likes':{ $gte: likesMinimos }})
+      .sort( { 'carpetas.recetasDelFolder.likes': -1 } )
       .forEach(function(post) {
             if (post.carpetas) {
                         post.carpetas.forEach(function(folder) {
@@ -251,10 +252,10 @@ var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
                             //para cada receta en el folder reviso si el titulo coincide
                               folder.recetasDelFolder.forEach(function(recetaB) {
                                 if (recetaB.title) {
-                                    if (recetaB.tipo === tipo && recetaB.likes >== likesMinimos)
+                                    if (recetaB.tipo === tipo && recetaB.likes >= likesMinimos)
                                     {
                                       //console.log(folder.recetasDelFolder);
-                                      listaRecetas.push(recetaB);
+                                      agregarRecetaLista(listaRecestas,recetaB);
                                     }
                                 }
                               });
@@ -262,9 +263,21 @@ var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
                         });
             }
       });
-
+      callback(listaRecetas);
 }
-
+function agregarRecetaLista(lista,receta)
+{
+  //es como un insertion sort
+  lista.push(receta);
+  var i = lista.length;
+  while(i>0 && lista[i].likes > lista[i-1])
+  {
+    var medio=lista[i-1];
+    lista[i-1] = lista[i];
+    lista[i] = medio;
+    i--;
+  }
+}
 
 
 

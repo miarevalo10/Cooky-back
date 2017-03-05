@@ -45,37 +45,48 @@ var like = function (clientNickname, titulo)
 }
 
 
+var mejoresRecetasTipo1=[];
+var mejoresRecetasTipo2=[];
+var mejoresRecetasTipo3=[];
 
-var traerCliente = function (clientNickname, clientPassword, funcionCallbackResponse)
+var getRecipeByTypeSetListas = function ()
 {
-	console.log('validando datos...'+ clientNickname +" "+clientPassword);
-	if(clientNickname === undefined || clientPassword === undefined)
-	{
-		funcionCallbackResponse(null);
-	}
-	console.log('datos definidos... buscando cliente... ');
-	baseDatos.getClient(clientNickname, clientPassword , funcionCallbackResponse);
-}
-
-var modificarCliente = function (cliente, funcionCallbackResponse)
-{
-	var nickName = cliente.nickName;
-	existeEsteNickName(nickName, function(existeNickName){
-		if(existeNickName)
-		{
-			//ya existe entonces se puede modificar
-			console.log('si existe');
-			baseDatos.updateClient(cliente);//asincrono
-			funcionCallbackResponse(true);//si se modifica
-		}
-		else
-		{
-			console.log('no existe');
-			funcionCallbackResponse(false);//no existe entonces no se puede modificar
-			
-		}
+	console.log("\n recuperando listas de mejores tipos");
+	baseDatosRecipe.getRecipeByType(1, 0, function(lista){
+		mejoresRecetasTipo1= lista;
+		console.log("\n lista 1 ");
+		console.log("\n "+ mejoresRecetasTipo1);
+	});
+	baseDatosRecipe.getRecipeByType(2, 0, function(lista){
+		mejoresRecetasTipo2= lista;
+		console.log("\n lista 2 ");
+		console.log("\n "+ mejoresRecetasTipo2);
+	});
+	baseDatosRecipe.getRecipeByType(3, 0, function(lista){
+		mejoresRecetasTipo3= lista;
+		console.log("\n lista 3 ");
+		console.log("\n "+ mejoresRecetasTipo3);
 	});
 }
+getRecipeByTypeSetListas();
+
+function recetaPorTipo(tipo)
+{
+	if(tipo===1)
+	{
+		return mejoresRecetasTipo1;
+	}
+	//el else no es necesario pero por si acaso
+	else if(tipo===2)
+	{
+		return mejoresRecetasTipo2;
+	}
+	else if(tipo===3)
+	{
+		return mejoresRecetasTipo3;
+	}
+}
+
 
 var borrarReceta = function (receta, funcionCallbackResponse)
 {
@@ -105,8 +116,8 @@ var borrarReceta = function (receta, funcionCallbackResponse)
 
 module.exports = {
   createRecipe: crearReceta,
-  /**getRecipeByType: traerRecetaPorTipo,
-  getRecipeByUser: traerRecetaPorUsuario,*/
+  getRecipeByType: recetaPorTipo,
+  /**getRecipeByUser: traerRecetaPorUsuario,*/
   deleteRecipe:borrarReceta,
   likeRecipe: like
 };
