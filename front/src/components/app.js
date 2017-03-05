@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import VideoPlayer from './video_player';
 import SignUpModal from './signUpModal';
 
 "use strict";
@@ -10,7 +9,6 @@ class App extends Component {
     super(props);
 
   }
-
 
 
   render() {

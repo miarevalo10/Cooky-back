@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import FontAwesome from 'react-fontawesome';
 import Input from './input';
 
@@ -7,13 +6,14 @@ import Input from './input';
 //Modal window for signing up
 class SignUpModal extends Component {
 
-    contructor(props) {
-        super(props);
+    constructor(props) {
+      super(props);
         this.state = {
             nombre: '',
             nickName: '',
             password: '',
-            picture: ''.role: ''
+            picture: '',
+            role: ''
         }
     }
 
@@ -46,11 +46,11 @@ class SignUpModal extends Component {
     render() {
         return (
             <div className="signUpModal">
-                <form onSubmit {this.props.onSubmit} className="ModalForm">
-                    <Input id="name" type="text" placeholder="Elvis Tek" / val={this.state.nombre} onChange={(event) => {
+                <form className="ModalForm">
+                    <Input id="name" type="text" placeholder="Elvis Tek"  val={this.state.nombre} onChange={(event) => {
                         this.setState({nombre: event.target.val})
                     }}/>
-                    <Input id="username" type="text" placeholder="elvistek10" / val={this.state.nickName} onChange={(event) => {
+                    <Input id="username" type="text" placeholder="elvistek10"  val={this.state.nickName} onChange={(event) => {
                         this.setState({nickName: event.target.val})
                     }}/>
                     <Input id="password" type="password" placeholder="password" val={this.state.password} onChange={(event) => {
