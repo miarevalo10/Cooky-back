@@ -307,7 +307,7 @@ var traerRecetaPorUsuario= function(nickname,  callbackListaRecetas){
         });
       });
 }
-var traerRecetaTipoDB = function(nickname, db,  callback) {
+var traerRecetaUsuarioDB = function(nickname, db,  callback) {
     // Get the clients collection
     var collection = db.collection('recipeCollection');
     // Find some clients

@@ -93,7 +93,8 @@ var traerRecetaPorUsuario = function (nickname,password, callback)
 		//el nickname y el password autentican que si es un cliente original
 		if(cliente !== null)
 		{
-			baseDatosRecipe.getRecipeByUser(nickName, callback);
+			console.log("cliente confirmado");
+			baseDatosRecipe.getRecipeByUser(nickname, callback);
 		}
 		else
 		{

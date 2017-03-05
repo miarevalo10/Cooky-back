@@ -71,7 +71,7 @@ router.post('/getRecipeByType', function(req, res, next) {
 });
 
 
-router.post('/getRecipeByUser', function(req, res, next) {
+router.post('/getRecipesByUser', function(req, res, next) {
   console.log("ENTRA get by user");
   if (req.body.length > 1e6) { 
     //1mb FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
@@ -79,7 +79,7 @@ router.post('/getRecipeByUser', function(req, res, next) {
   }
   var user = req.body;
   console.log("verifying user "+ user.nickName);
-  recipeLogic.getRecipeByType(user.nickName,user.password , function(respuesta){
+  recipeLogic.getRecipeByUser(user.nickName,user.password , function(respuesta){
       res.send(respuesta);//la lista
       console.log("TERMINA get by user");
       res.end();
