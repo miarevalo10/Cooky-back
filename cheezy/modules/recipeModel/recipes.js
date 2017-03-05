@@ -93,49 +93,16 @@ router.post('/recipeIngredients', function(req, res, next) {
 
 
 
-router.post('/updateClient', function(req, res, next) {
-  console.log("ENTRA updateClient");
-
-  if (req.body.length > 1e6) { 
-    //1mb
-    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
-    req.connection.destroy();
-  }
-
-  var newClient = req.body;
-  console.log("modifying client: "+ JSON.stringify(newClient.nickName));
-  clientLogic.updateClient(newClient, function (creado){
-    //mando esta funcion como callback para que todo sea sincronico
-    if(creado)//devuelve boolean
-    {
-        console.log("paso final, ya se esta modificando en paralelo si el password era correcto");
-        res.send('MODIFICADO si el password era correcto');
-    }
-    else
-    {
-      console.log("paso final, no se agrega nada porque nickname repetido");
-      res.send('Ocurrio un problema');
-    }
-    console.log("TERMINA updateClient");
-    res.end();
-  });
-});
-
-
-
-
-router.post('/deleteClient', function(req, res, next) {
+router.post('/deleteRecipe', function(req, res, next) {
   console.log("ENTRA delete Client");
 
   if (req.body.length > 1e6) { 
-    //1mb
-    // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+    //1mb FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
     req.connection.destroy();
   }
-
-  var newClient = req.body;
-  console.log("deleting client: "+ JSON.stringify(newClient.nickName));
-  clientLogic.deleteClient(newClient, function (borrado){
+  var recipe = req.body;
+  console.log("deleting recipe: "+ recipe.title + " from folder "+recipe.folder+ " of client "+ recipe.nickName);
+  clientLogic.deleteClient(recipe, function (borrado){
     //mando esta funcion como callback para que todo sea sincronico
     if(borrado)//devuelve boolean
     {
@@ -145,9 +112,9 @@ router.post('/deleteClient', function(req, res, next) {
     else
     {
       console.log("paso final, no se borra porque no hay un registro así");
-      res.send('NOT A CLIENT');
+      res.send('NO');
     }
-    console.log("TERMINA delete Client");
+    console.log("TERMINA delete");
     res.end();
   });
 });
