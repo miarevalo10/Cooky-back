@@ -222,98 +222,46 @@ var likeDB = function(nickname,titulo, db, callback) {
 
 
 
-var traerCliente = function(nickName, password, coneccionConResponse){
+var traerRecetaPorTipo= function(tipo, likesMinimos, callbackListaRecetas){
       MongoClient.connect(url, function(err, db) 
       {
         //esta haciendo esto sincrono 
-        console.log('1 traer cliente base datos');
-        traerClienteDB(nickName, password, db,  function(booleanTrajo, objetoCliente)
+        console.log('1 traer receta por tipo base datos');
+        traerRecetaTipoDB(tipo,likesMinimos, db,  function(booleanTrajo, listaRecetas)
         {
-          console.log('2 traer cliente base datos');
-          console.log('este es el callback! resultado, agrego al cliente '+booleanTrajo);
+          console.log('2 traer receta por tipo base datos');
           db.close();
-          coneccionConResponse(objetoCliente);
+          callbackListaRecetas(listaRecetas);
         });
         console.log('3 traer cliente base datos');
       });
 }
-var traerClienteDB = function(nickNameC, passwordC, db,  callback) {
+var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
     // Get the clients collection
-    var collection = db.collection('clientCollection');
+    var collection = db.collection('recipeCollection');
     // Find some clients
-    console.log("trayendo a "+nickNameC + " con password "+ passwordC);
-    collection.find({nickName:nickNameC, password:passwordC}).toArray(function(err, results){
-          if(err) {
-              console.log('error occured: ' + err);
-              callback(false);
-          }
-          else
-          {
-            console.log("Found the following records para el cliente "+JSON.stringify(results[0]));
-            //docs es la respuesta a la query
-            if(results.length === 0)
-            {
-              callback(false , null);
+    var listaRecetas=[];
+    console.log("trayendo mejores recetas por tipo "+ tipo);
+    collection.find({'carpetas.recetasDelFolder.tipo':tipo,
+                     'carpetas.recetasDelFolder.likes':{ $gte: likesMinimos }})
+      .forEach(function(post) {
+            if (post.carpetas) {
+                        post.carpetas.forEach(function(folder) {
+                          if (folder.recetasDelFolder) {
+                            //para cada receta en el folder reviso si el titulo coincide
+                              folder.recetasDelFolder.forEach(function(recetaB) {
+                                if (recetaB.title) {
+                                    if (recetaB.tipo === tipo && recetaB.likes >== likesMinimos)
+                                    {
+                                      //console.log(folder.recetasDelFolder);
+                                      listaRecetas.push(recetaB);
+                                    }
+                                }
+                              });
+                          }
+                        });
             }
-            else
-            {
-              callback(true , results); //lo encontro
-            }
-          }
-          
-     }); 
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-var modificarCliente = function(cliente){
-      MongoClient.connect(url, function(err, db) 
-      {
-        //esta haciendo esto sincrono 
-        console.log('1 modificar cliente base datos');
-        modificarClienteDB(cliente, db,  function(booleanM)
-        {
-          console.log('2 modificar cliente base datos');
-          console.log('este es el callback! resultado, modifico al cliente '+booleanM);
-          db.close();
-        });
-        console.log('3 modificar cliente base datos');
       });
-}
-var modificarClienteDB = function(cliente, db,  callback) {
-    // Get the clients collection
-    var collection = db.collection('clientCollection');
-    // Find some clients
-    console.log("trayendo a "+cliente.nickName + " con password "+ cliente.password);
-    
-    var writeResponse = collection.update({nickName:cliente.nickName, password:cliente.password}, 
-                                          { 
-                                            $set: { 
-                                                      picture: cliente.picture,
-                                                      description: cliente.description 
-                                                  } 
-                                          });
-
-    console.log("Response "+writeResponse);
-    //docs es la respuesta a la query
-    if(writeResponse.writeConcernError === undefined)
-    {
-      callback(true);//modifico
-    }
-    else
-    {
-      callback(false); //no modifico
-    }
 
 }
 
@@ -369,8 +317,8 @@ module.exports = {
   createRecipe: crearReceta,
   verificarTituloReceta:verificarTituloReceta,
   likeRecipe: like,
-  /**getRecipeByType: traerRecetaPorTipo,
-  getRecipeByUser: traerRecetaPorUsuario,*/
+  getRecipeByType: traerRecetaPorTipo,
+  /**getRecipeByUser: traerRecetaPorUsuario,*/
   
   deleteRecipe:borrarRecetaDeFavs
 };
