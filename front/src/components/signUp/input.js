@@ -23,7 +23,6 @@ class Input extends Component {
                   placeholder={this.props.placeholder}
                   value={this.props.val}
                   onChange={this.handleInputChange}/>
-                <label for={this.props.name}></label>
             </div>
         );
     }

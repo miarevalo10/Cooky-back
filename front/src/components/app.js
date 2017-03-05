@@ -20,8 +20,6 @@ class App extends Component {
     }
   }
 
-
-
   render() {
     const isLoggedIn = this.state.loggedIn;
     let element = null;
