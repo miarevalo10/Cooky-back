@@ -21,6 +21,14 @@ class SignUpModal extends Component {
         this.handleNameInput = this.handleNameInput.bind(this);
         this.handlePasswordInput = this.handlePasswordInput.bind(this);
         this.handleUsernameInput = this.handleUsernameInput.bind(this);
+
+        this.logIn = this.logIn.bind(this);
+    }
+
+    //logIn
+    logIn(e){
+      console.log("entra logIn en signupmodal");
+      this.props.onLog(e.target.nodeName);
     }
 
     //verifies if username already exists
@@ -74,7 +82,7 @@ class SignUpModal extends Component {
                     <Input id="name" type="text" placeholder="Elvis Tek" val={this.state.nombre} onTextInput={this.handleNameInput}/>
                     <Input id="username" type="text" placeholder="elvistek10" val={this.state.nickName} onTextInput={this.handleUsernameInput}/>
                     <Input id="password" type="password" placeholder="password" val={this.state.password} onTextInput={this.handlePasswordInput}/>
-                    <button onClick={this.checkNickname.bind(this)}>Sign up
+                    <button onClick={(e)=>{this.checkNickname(e); this.logIn(e);}}>Sign up
                         <i className="fa fa-fw fa-chevron-right"></i>
                     </button>
                 </form>
