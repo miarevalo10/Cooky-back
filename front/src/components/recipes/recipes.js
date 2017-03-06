@@ -45,7 +45,8 @@ class Recipes extends Component {
                     {this.state.recipes.map(recipe => {
                         return (
                           <div key={recipe.title}>
-                            <Recipe recipe={recipe} ingredients={recipe.Ingredients}/>
+                            <Recipe recipe={recipe} ingredients={recipe.Ingredients}
+                            cook={this.props.username} password={this.props.password} title={recipe.title}/>
                           </div>
                         );
                     })}

@@ -13,6 +13,7 @@ class Recipe extends Component {
     }
 
     deleteRecipe(){
+      console.log("nickName: "+this.props.cook);
         axios.post(ROOT_URL+"/recipes/deleteRecipe",{
           nickName: this.props.cook,
           password: this.props.password,
