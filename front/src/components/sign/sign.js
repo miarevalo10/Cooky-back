@@ -43,7 +43,7 @@ class Sign extends Component {
     signIn(e) {
         axios.post(ROOT_URL + "/users/getClient", {
             nickName: this.state.nickNameIn,
-            password: this.state.passwordIn,
+            password: this.state.passwordIn
         }).then(response => {
             console.log(response);
             if (response.data === null) {
@@ -92,12 +92,16 @@ class Sign extends Component {
         this.setState({nombre: x});
     }
     handlePasswordInput(x) {
-        this.setState({password: x},()=>{
-          this.props.password(this.state.password);
+        this.setState({
+            password: x
+        }, () => {
+            this.props.password(this.state.password);
         });
     }
     handleUsernameInput(x) {
-        this.setState({nickName: x},()=>{
+        this.setState({
+            nickName: x
+        }, () => {
             this.props.username(this.state.nickName);
         });
 
@@ -105,15 +109,18 @@ class Sign extends Component {
 
     //state setters for signing in
     handlePasswordInputIn(x) {
-        this.setState({passwordIn: x},()=>{
-          this.props.password(this.state.passwordIn);
+        this.setState({
+            passwordIn: x
+        }, () => {
+            this.props.password(this.state.passwordIn);
         });
 
     }
     handleUsernameInputIn(x) {
-
-        this.setState({nickNameIn: x},()=>{
-          this.props.username(this.state.nickNameIn);
+        this.setState({
+            nickNameIn: x
+        }, () => {
+            this.props.username(this.state.nickNameIn);
         });
     }
 
@@ -195,9 +202,9 @@ class Sign extends Component {
 
         return (
             <div className="SignUpAndIn">
-              <div>
-                <img className="mainlogo" src="https://68.media.tumblr.com/caa95bb0890f2f65129cd56a50130c64/tumblr_omd0idc0Wd1w7ypfio1_1280.png" alt="hola"/>
-              </div>
+                <div>
+                    <img className="mainlogo" src="https://68.media.tumblr.com/caa95bb0890f2f65129cd56a50130c64/tumblr_omd0idc0Wd1w7ypfio1_1280.png" alt="hola"/>
+                </div>
                 <div className="row">
                     <h3>Cooky is a website where you may store or discover new recipes!</h3>
                     <h4>Sign in or sign up if you don't have an account already</h4>
