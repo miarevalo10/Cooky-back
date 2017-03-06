@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sign from './sign/sign';
 import Navigbar from './main/navbar';
 import Recipes from './recipes/recipes';
+import AddRecipe from './recipes/addRecipe'
 import {Button, Well} from 'react-bootstrap';
 "use strict";
 
@@ -61,8 +62,7 @@ class App extends Component {
               <div className="row"><Well></Well></div><label>BUSCAAAR</label></div>);
             }
             if (status==="add"){
-              element2 = (<div><div className="row"><Well></Well></div>
-              <div className="row"><Well></Well></div><label>AGREGAAAR</label></div>);
+              element2 = (<AddRecipe username={this.state.username} password={this.state.password}/>);
             }
         }
         return (
