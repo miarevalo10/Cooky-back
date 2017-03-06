@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 
 // Connection URL
-var url = 'mongodb://localhost:27017/cheezyDataBase';
+var url = process.env.MONGODB_URI;
 
 // Use connect method to connect to the server
 // se ejecuta apenas se abre el servidor
@@ -22,10 +22,10 @@ var conectarBD = MongoClient.connect(url, function(err, db) {
 
 var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente){
     var existe =false;
-    
-      MongoClient.connect(url, function(err, db) 
+
+      MongoClient.connect(url, function(err, db)
       {
-        //esta haciendo esto sincrono 
+        //esta haciendo esto sincrono
         console.log('1 existe nickName?');
         encontrarNickName(nickName, db, existe, function(exists)//esta funcion es el callback de abajo
         {
@@ -35,7 +35,7 @@ var existeEsteNickName = function(nickName, funcionCallbackParaAgregarCliente){
           console.log('3 existe nickName? Devuelve '+existe);
           funcionCallbackParaAgregarCliente(existe);
         });
-        
+
       });
 }
 var encontrarNickName = function(nickNameC, db, existe, callback) {
@@ -61,8 +61,8 @@ var encontrarNickName = function(nickNameC, db, existe, callback) {
               callback(true); //repetido
             }
           }
-          
-     }); 
+
+     });
 }
 
 
@@ -77,15 +77,15 @@ var encontrarNickName = function(nickNameC, db, existe, callback) {
 
 
 var crearCliente = function(cliente){
-      MongoClient.connect(url, function(err, db) 
+      MongoClient.connect(url, function(err, db)
       {
-        //esta haciendo esto sincrono 
+        //esta haciendo esto sincrono
         console.log('1 crear cliente base datos');
         crearClienteDB(cliente, db,  function(booleanAgrego)
         {
           console.log('2 crear cliente base datos');
           console.log('este es el callback! resultado, agrego al cliente '+booleanAgrego);
-          
+
           db.close();
         });
         console.log('3 crear cliente base datos');
@@ -123,9 +123,9 @@ var crearClienteDB = function(cliente, db, callback) {
 
 
 var traerCliente = function(nickName, password, coneccionConResponse){
-      MongoClient.connect(url, function(err, db) 
+      MongoClient.connect(url, function(err, db)
       {
-        //esta haciendo esto sincrono 
+        //esta haciendo esto sincrono
         console.log('1 traer cliente base datos');
         traerClienteDB(nickName, password, db,  function(booleanTrajo, objetoCliente)
         {
@@ -160,8 +160,8 @@ var traerClienteDB = function(nickNameC, passwordC, db,  callback) {
               callback(true , results); //lo encontro
             }
           }
-          
-     }); 
+
+     });
 
 }
 
@@ -177,9 +177,9 @@ var traerClienteDB = function(nickNameC, passwordC, db,  callback) {
 
 
 var modificarCliente = function(cliente){
-      MongoClient.connect(url, function(err, db) 
+      MongoClient.connect(url, function(err, db)
       {
-        //esta haciendo esto sincrono 
+        //esta haciendo esto sincrono
         console.log('1 modificar cliente base datos');
         modificarClienteDB(cliente, db,  function(booleanM)
         {
@@ -195,13 +195,13 @@ var modificarClienteDB = function(cliente, db,  callback) {
     var collection = db.collection('clientCollection');
     // Find some clients
     console.log("trayendo a "+cliente.nickName + " con password "+ cliente.password);
-    
-    var writeResponse = collection.update({nickName:cliente.nickName, password:cliente.password}, 
-                                          { 
-                                            $set: { 
+
+    var writeResponse = collection.update({nickName:cliente.nickName, password:cliente.password},
+                                          {
+                                            $set: {
                                                       picture: cliente.picture,
-                                                      description: cliente.description 
-                                                  } 
+                                                      description: cliente.description
+                                                  }
                                           });
 
     console.log("Response "+writeResponse);
@@ -227,9 +227,9 @@ var modificarClienteDB = function(cliente, db,  callback) {
 
 
 var borrarCliente = function(nickName, password){
-      MongoClient.connect(url, function(err, db) 
+      MongoClient.connect(url, function(err, db)
       {
-        //esta haciendo esto sincrono 
+        //esta haciendo esto sincrono
         console.log('1 eliminar cliente base datos');
         eliminarClienteDB(nickName, password, db,  function(booleanElimino)
         {
@@ -260,4 +260,3 @@ module.exports = {
   deleteClient: borrarCliente
 
 };
-

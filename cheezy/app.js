@@ -10,6 +10,8 @@ var users = require('./modules/clientModel/users');
 var recipes = require('./modules/recipeModel/recipes');
 var cors = require('cors')
 
+var port = process.env.PORT||3000
+
 var app = express();
 
 
