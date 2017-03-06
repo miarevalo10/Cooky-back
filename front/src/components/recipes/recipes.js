@@ -20,6 +20,20 @@ class Recipes extends Component {
         this.getRecipesByUsername = this.getRecipesByUsername.bind(this);
     }
 
+    deleteRecipe(titleR){
+        console.log("ENTRA AQUI PUTA MADRE");
+        console.log("nickName: "+this.props.username);
+          axios.post(ROOT_URL+"/recipes/deleteRecipe",{
+            nickName: this.props.username,
+            password: this.props.password,
+            title: titleR
+          }
+        ).then(response => {
+          console.log("BORROOOO"+response),
+          this.getRecipesByUsername()
+        })
+    }
+
     getRecipesByUsername() {
         console.log(this.props.username);
         console.log(this.props.password);
@@ -46,7 +60,7 @@ class Recipes extends Component {
                         return (
                           <div key={recipe.title}>
                             <Recipe recipe={recipe} ingredients={recipe.Ingredients}
-                            cook={this.props.username} password={this.props.password} title={recipe.title}/>
+                             title={recipe.title} deleteRecipe={this.deleteRecipe.bind(this)} />
                           </div>
                         );
                     })}
