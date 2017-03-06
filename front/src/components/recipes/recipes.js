@@ -18,7 +18,6 @@ class Recipes extends Component {
             likes: ''
         }
         this.getRecipesByUsername = this.getRecipesByUsername.bind(this);
-        console.log("holiiiiiiiiii");
     }
 
     getRecipesByUsername() {
