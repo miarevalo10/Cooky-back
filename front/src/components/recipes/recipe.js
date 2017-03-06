@@ -13,13 +13,13 @@ class Recipe extends Component {
     }
 
     deleteRecipe(){
-        axios.delete(ROOT_URL+"/recipes/deleteRecipe",{
+        axios.post(ROOT_URL+"/recipes/deleteRecipe",{
           nickName: this.props.cook,
           password: this.props.password,
           title: this.props.title
         }
       ).then(response =>
-      console.log(response)
+      console.log("BORROOOO"+response)
     )
     }
 
@@ -56,7 +56,7 @@ class Recipe extends Component {
                                 <td>{this.props.recipe.likes}</td>
                             </tr>
                             <tr>
-                              <td colSpan="2"><Button bsStyle="danger">Delete</Button></td>
+                              <td colSpan="2"><Button onClick={this.deleteRecipe.bind(this)}  bsStyle="danger">Delete</Button></td>
                             </tr>
                         </tbody>
                     </Table>

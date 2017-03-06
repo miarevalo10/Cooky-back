@@ -109,7 +109,7 @@ router.post('/recipeIngredients', function(req, res, next) {
 
 
 router.post('/deleteRecipe', function(req, res, next) {
-  console.log("ENTRA delete Client");
+  console.log("ENTRA delete recipe");
 
   if (req.body.length > 1e6) { 
     //1mb FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
