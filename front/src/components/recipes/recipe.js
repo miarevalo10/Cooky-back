@@ -9,9 +9,23 @@ class Recipe extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+        }
     }
 
+    deleteRecipe(titleR){
+
+          console.log("nickName: "+this.props.username);
+            axios.post(ROOT_URL+"/recipes/deleteRecipe",{
+              nickName: this.props.username,
+              password: this.props.password,
+              title: titleR
+            }
+          ).then(response => {
+            console.log("BORROOOO"+response),
+            this.props.getRecipes()
+          })
+        }
 
 
     render() {
@@ -47,7 +61,7 @@ class Recipe extends Component {
                                 <td>{this.props.recipe.likes}</td>
                             </tr>
                             <tr>
-                              <td colSpan="2"><Button onClick={this.props.deleteRecipe(this.props.title)}  bsStyle="danger">Delete</Button></td>
+                              <td colSpan="2"><Button onClick={() => {this.deleteRecipe(this.props.title)}}  bsStyle="danger">Delete</Button></td>
                             </tr>
                         </tbody>
                     </Table>
