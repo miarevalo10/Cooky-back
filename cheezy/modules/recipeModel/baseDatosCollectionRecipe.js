@@ -262,7 +262,10 @@ var traerRecetaTipoDB = function(tipo, likesMinimos, db,  callback) {
                 var usuarioActual = results[i];
                 for(var k=0; k< usuarioActual.carpetas.length;k++)
                 {
-                    var carpetaActual = usuarioActual.carpetas[i];
+                    var carpetaActual = usuarioActual.carpetas[k];
+                    console.log(JSON.stringify(usuarioActual)+"         user" );
+                    console.log(JSON.stringify(carpetaActual) + "       carpeta");
+
                     for(var j=0; j< carpetaActual.recetasDelFolder.length;j++)
                     {
                         var recetaActual = carpetaActual.recetasDelFolder[j];
