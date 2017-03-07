@@ -3,7 +3,7 @@ var MongoClient = require('mongodb').MongoClient
   , assert = require('assert');
 
 // Connection URL
-var url = process.env.MONGODB_URI;
+var url = process.env.MONGODB_URI || "mongodb://heroku_tzqr205d:o3s6m9sibu5ojkmqv3od0vlm8f@ds121190.mlab.com:21190/heroku_tzqr205d";
 
 // Use connect method to connect to the server
 // se ejecuta apenas se abre el servidor
