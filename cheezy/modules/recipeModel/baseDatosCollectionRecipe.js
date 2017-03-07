@@ -5,7 +5,8 @@ var MongoClient = require('mongodb').MongoClient
 // Connection URL
 var url = process.env.MONGODB_URI || "mongodb://heroku_tzqr205d:o3s6m9sibu5ojkmqv3od0vlm8f@ds121190.mlab.com:21190/heroku_tzqr205d";
 
-
+/*Pueden usar una librería como mongoose que les facilite las cosas para las peticiones CRUD. Sin embargo me parece super que hayan lo
+hecho así, porque da a entender que saben mejor como todo funciona.*/
 
 var crearReceta = function(recipe, callback){
       MongoClient.connect(url, function(err, db)
